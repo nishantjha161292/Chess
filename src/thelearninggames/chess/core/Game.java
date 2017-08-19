@@ -2,8 +2,6 @@ package thelearninggames.chess.core;
 
 import com.sun.tools.javac.util.Pair;
 import thelearninggames.chess.player.Player;
-import thelearninggames.chess.player.PlayerFactory;
-import thelearninggames.chess.player.PlayerType;
 import thelearninggames.chess.ui.GameUI;
 
 
@@ -18,10 +16,9 @@ public class Game implements Runnable{
     Player winner;
     GameUI ui;
 
-    public Game(GameUI ui){
+    public Game(GameUI ui, Pair<Player,Player> pair){
         status = Status.Running;
         state = new GameState();
-        Pair<Player,Player> pair = PlayerFactory.getPlayers(PlayerType.CommandLine,PlayerType.CommandLine);
         white = pair.fst;
         black = pair.snd;
         currentPlayer = white;
@@ -36,8 +33,7 @@ public class Game implements Runnable{
         ui.repaint();
         while(status == Status.Running){
 
-            Move m = currentPlayer.getMove(state);
-            state.add(m);
+            state.add(currentPlayer.getMove(state));
             if(state.isCheckMate()){
                 status = Status.Over;
                 winner = currentPlayer;

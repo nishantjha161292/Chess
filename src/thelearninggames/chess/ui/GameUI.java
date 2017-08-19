@@ -1,14 +1,16 @@
 package thelearninggames.chess.ui;
+import com.sun.tools.javac.util.Pair;
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.pieces.Piece;
+import thelearninggames.chess.player.PlayerFactory;
+import thelearninggames.chess.player.PlayerType;
 
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class GameUI extends JFrame{
+public class GameUI extends JFrame implements MouseListener{
 
     private Thread t;
     private Game game;
@@ -16,11 +18,13 @@ public class GameUI extends JFrame{
     private JPanel[] tiles;
     private JLabel[] peices; // for test
     private JMenuBar menuBar;
+    public  static volatile int firstSelection = -1;
+    public  static volatile int secondSelection = -1;
 
 
-    public GameUI(){
+    public GameUI() {
         super("Chess");
-        game = new Game(this);
+        game = new Game(this, PlayerFactory.getPlayers(PlayerType.UI, PlayerType.UI));
 
         this.setMinimumSize(new Dimension(550,550));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,8 +41,10 @@ public class GameUI extends JFrame{
             peices[i] = new JLabel("");
             peices[i].setForeground(Color.CYAN);
             tiles[i] = new JPanel();
+            tiles[i].setName(String.valueOf(i));
             tiles[i].add(peices[i]);
             tiles[i].setSize(new Dimension(50,50));
+            tiles[i].addMouseListener(this);
             if(i%8 == 0)
                 startWithWhite = !startWithWhite;
 
@@ -86,5 +92,52 @@ public class GameUI extends JFrame{
                 peices[i].setText("");
         }
         super.repaint();
+    }
+
+    public static Pair<Integer,Integer> getLast2Clicks(){
+        int first = firstSelection;
+        int second = secondSelection;
+        if(first != -1 && second != -1) {
+            firstSelection = -1;
+            secondSelection = -1;
+        }
+        return new Pair<>(first, second);
+    }
+
+    @Override
+    public synchronized void  mouseClicked(MouseEvent e) {
+        JPanel p = (JPanel)e.getSource();
+        int selection = Integer.parseInt(p.getName());
+        if(firstSelection == selection){
+            firstSelection = - 1;
+            return;
+        }
+        else if(firstSelection == -1){
+            firstSelection = selection;
+            return;
+        }
+        else if(secondSelection == -1){
+            secondSelection = selection;
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
