@@ -1,4 +1,4 @@
-package thelearninggames.chess;
+package thelearninggames.chess.core;
 
 import thelearninggames.chess.pieces.*;
 
@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class GameState {
 
-    Piece[] state;
+    volatile Piece[] state;
     boolean isCheckMate;
 
     public final Piece[] getState() {

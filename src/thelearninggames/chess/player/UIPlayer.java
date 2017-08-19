@@ -5,12 +5,9 @@ import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Move;
 import java.util.Scanner;
 
-public class CommandLinePlayer implements Player {
+public class UIPlayer implements Player {
 
     Color color;
-
-    Scanner Cin = new Scanner(System.in);
-
 
     @Override
     public Color getColor() {
@@ -20,12 +17,10 @@ public class CommandLinePlayer implements Player {
     @Override
     public Move getMove(final GameState state) {
 
-        int from = Cin.nextInt();
-        int to = Cin.nextInt();
-        return new Move(from,to);
+        return new Move(0,0);
     }
 
-    CommandLinePlayer(Color c){
+    UIPlayer(Color c){
         this.color = c;
     }
 }

@@ -1,6 +1,6 @@
 package thelearninggames.chess.pieces;
 
-import thelearninggames.chess.Color;
+import thelearninggames.chess.core.Color;
 
 import java.util.ArrayList;
 

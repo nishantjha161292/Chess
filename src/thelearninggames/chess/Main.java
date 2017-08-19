@@ -1,11 +1,11 @@
 package thelearninggames.chess;
 
+import thelearninggames.chess.ui.GameUI;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        Game g = new Game();
-        g.run();
-
+        GameUI ui = new GameUI();
     }
 }

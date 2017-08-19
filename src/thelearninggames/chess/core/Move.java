@@ -1,4 +1,4 @@
-package thelearninggames.chess;
+package thelearninggames.chess.core;
 
 public class Move {
 

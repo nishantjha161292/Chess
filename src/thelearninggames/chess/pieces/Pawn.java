@@ -1,8 +1,8 @@
 package thelearninggames.chess.pieces;
 
-import thelearninggames.chess.Color;
-import thelearninggames.chess.GameState;
-import thelearninggames.chess.Move;
+import thelearninggames.chess.core.Color;
+import thelearninggames.chess.core.GameState;
+import thelearninggames.chess.core.Move;
 
 import java.util.ArrayList;
 

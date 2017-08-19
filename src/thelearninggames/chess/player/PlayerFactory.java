@@ -1,7 +1,7 @@
 package thelearninggames.chess.player;
 
 import com.sun.tools.javac.util.Pair;
-import thelearninggames.chess.Color;
+import thelearninggames.chess.core.Color;
 
 public class PlayerFactory {
 
