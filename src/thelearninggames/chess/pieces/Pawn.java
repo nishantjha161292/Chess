@@ -31,6 +31,11 @@ public class Pawn implements Piece {
     }
 
     @Override
+    public PieceType getPieceType() {
+        return PieceType.Pawn;
+    }
+
+    @Override
     public String toString(){
         return "P";
     }

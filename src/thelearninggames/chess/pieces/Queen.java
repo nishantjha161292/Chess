@@ -31,6 +31,11 @@ public class Queen implements Piece {
     }
 
     @Override
+    public PieceType getPieceType() {
+        return PieceType.Queen;
+    }
+
+    @Override
     public String toString(){
         return "Q";
     }

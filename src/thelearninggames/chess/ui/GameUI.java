@@ -20,6 +20,7 @@ public class GameUI extends JFrame implements MouseListener{
     private JMenuBar menuBar;
     public  static volatile int firstSelection = -1;
     public  static volatile int secondSelection = -1;
+    private int prevselection = -1;
 
 
     public GameUI() {
@@ -38,7 +39,7 @@ public class GameUI extends JFrame implements MouseListener{
 
         boolean startWithWhite = true;
         for(int i = 0; i < 64; i++){
-            peices[i] = new JLabel("");
+            peices[i] = new JLabel();
             peices[i].setForeground(Color.CYAN);
             tiles[i] = new JPanel();
             tiles[i].setName(String.valueOf(i));
@@ -52,11 +53,11 @@ public class GameUI extends JFrame implements MouseListener{
                 if(i%2 == 0 )
                     tiles[i].setBackground(Color.WHITE);
                 else
-                    tiles[i].setBackground(Color.BLACK);
+                    tiles[i].setBackground(Color.GRAY);
             }
             else{
                 if(i%2 == 0 )
-                    tiles[i].setBackground(Color.BLACK);
+                    tiles[i].setBackground(Color.GRAY);
                 else
                     tiles[i].setBackground(Color.WHITE);
             }
@@ -84,12 +85,14 @@ public class GameUI extends JFrame implements MouseListener{
 
     @Override
     public void repaint() {
-        Piece[] piece = game.getState().getState();
+        Piece[] state = game.getState().getState();
         for(int i = 0; i < 64; i ++) {
-            if(piece[i] != null)
-                peices[i].setText(piece[i].toString());
+            if(state[i] != null){
+                String filename = "resource/"+state[i].toString()+state[i].getColor().toString()+".png";
+                peices[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
+            }
             else
-                peices[i].setText("");
+                peices[i].setIcon(null);
         }
         super.repaint();
     }
@@ -107,18 +110,25 @@ public class GameUI extends JFrame implements MouseListener{
     @Override
     public synchronized void  mouseClicked(MouseEvent e) {
         JPanel p = (JPanel)e.getSource();
+
         int selection = Integer.parseInt(p.getName());
         if(firstSelection == selection){
             firstSelection = - 1;
-            return;
+            p.setBorder(BorderFactory.createEmptyBorder());;
         }
         else if(firstSelection == -1){
             firstSelection = selection;
-            return;
+            p.setBorder(BorderFactory.createLineBorder(Color.CYAN));
         }
         else if(secondSelection == -1){
             secondSelection = selection;
+            p.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+            if(firstSelection != -1)
+                tiles[firstSelection].setBorder(BorderFactory.createEmptyBorder());
         }
+        if(prevselection != -1)
+            tiles[prevselection].setBorder(BorderFactory.createEmptyBorder());
+        prevselection = selection;
     }
 
     @Override
@@ -128,7 +138,6 @@ public class GameUI extends JFrame implements MouseListener{
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override

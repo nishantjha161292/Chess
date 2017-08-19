@@ -31,6 +31,11 @@ public class Knight implements Piece {
     }
 
     @Override
+    public PieceType getPieceType() {
+        return PieceType.Knight;
+    }
+
+    @Override
     public String toString(){
         return "K";
     }

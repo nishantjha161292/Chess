@@ -31,6 +31,11 @@ public class King implements Piece {
     }
 
     @Override
+    public PieceType getPieceType() {
+        return PieceType.King;
+    }
+
+    @Override
     public String toString(){
         return "Ki";
     }

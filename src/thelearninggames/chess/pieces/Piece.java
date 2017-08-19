@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public interface Piece {
     Color getColor();
+    PieceType getPieceType();
     ArrayList<Move> getValidMoves(GameState state);
     int getPos();
     void setPos(int i);

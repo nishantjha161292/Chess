@@ -26,6 +26,11 @@ public class Bishop implements Piece {
     }
 
     @Override
+    public PieceType getPieceType() {
+        return PieceType.Bishop;
+    }
+
+    @Override
     public ArrayList<Move> getValidMoves(GameState state) {
         return null;
     }

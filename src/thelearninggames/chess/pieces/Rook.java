@@ -31,6 +31,11 @@ public class Rook implements Piece {
     }
 
     @Override
+    public PieceType getPieceType() {
+        return PieceType.Rook;
+    }
+
+    @Override
     public String toString(){
         return "R";
     }
