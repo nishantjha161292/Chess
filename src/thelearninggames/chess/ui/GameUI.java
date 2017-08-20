@@ -118,6 +118,7 @@ public class GameUI extends JFrame implements MouseListener{
         int selection = Integer.parseInt(p.getName());
         if(firstSelection == selection){
             firstSelection = - 1;
+            secondSelection = -1;
             p.setBorder(BorderFactory.createEmptyBorder());;
         }
         else if(firstSelection == -1){

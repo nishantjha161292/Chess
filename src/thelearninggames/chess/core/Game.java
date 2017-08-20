@@ -68,6 +68,8 @@ public class Game implements Runnable{
         Piece p = state.at(from);
         if(p == null || p.getColor() != currentPlayer.getColor() || from == to)
             return false;
+        if(state.at(to) != null && state.at(to).getColor() == state.at(from).getColor())
+            return false;
 
         switch(p.getPieceType()){
 
