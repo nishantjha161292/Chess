@@ -23,15 +23,15 @@ public class PlayerFactory {
         }
         switch(t2){
             case UI:{
-                p2 = new UIPlayer(Color.WHITE);
+                p2 = new UIPlayer(Color.BLACK);
                 break;
             }
             case CommandLine:{
-                p2 = new CommandLinePlayer(Color.WHITE);
+                p2 = new CommandLinePlayer(Color.BLACK);
                 break;
             }
             case CPU:{
-                p2 = new CPUPlayer(Color.WHITE);
+                p2 = new CPUPlayer(Color.BLACK);
                 break;
             }
         }

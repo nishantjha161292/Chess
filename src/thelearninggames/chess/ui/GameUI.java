@@ -16,12 +16,12 @@ public class GameUI extends JFrame implements MouseListener{
     private Game game;
     private JPanel board;
     private JPanel[] tiles;
-    private JLabel[] peices; // for test
+    private JLabel[] pieces; // for test
     private JMenuBar menuBar;
     public  static volatile int firstSelection = -1;
     public  static volatile int secondSelection = -1;
     private int prevselection = -1;
-
+    private JLabel currentPlayer = new JLabel("Current Player :      ");
 
     public GameUI() {
         super("Chess");
@@ -35,15 +35,15 @@ public class GameUI extends JFrame implements MouseListener{
         board.setMinimumSize(new Dimension(500,500));
         board.setLayout(new GridLayout(8,8,2,2));
         tiles = new JPanel[64];
-        peices = new JLabel[64];
+        pieces = new JLabel[64];
 
         boolean startWithWhite = true;
         for(int i = 0; i < 64; i++){
-            peices[i] = new JLabel();
-            peices[i].setForeground(Color.CYAN);
+            pieces[i] = new JLabel();
+            pieces[i].setForeground(Color.CYAN);
             tiles[i] = new JPanel();
             tiles[i].setName(String.valueOf(i));
-            tiles[i].add(peices[i]);
+            tiles[i].add(pieces[i]);
             tiles[i].setSize(new Dimension(50,50));
             tiles[i].addMouseListener(this);
             if(i%8 == 0)
@@ -78,6 +78,7 @@ public class GameUI extends JFrame implements MouseListener{
             }
         });
         menuBar.add(start);
+        menuBar.add(currentPlayer);
         this.add(menuBar,BorderLayout.PAGE_START);
         this.add(board,BorderLayout.CENTER);
         this.setVisible(true);
@@ -89,11 +90,14 @@ public class GameUI extends JFrame implements MouseListener{
         for(int i = 0; i < 64; i ++) {
             if(state[i] != null){
                 String filename = "resource/"+state[i].toString()+state[i].getColor().toString()+".png";
-                peices[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
+                pieces[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
             }
             else
-                peices[i].setIcon(null);
+                pieces[i].setIcon(null);
         }
+        currentPlayer.setText("Current Player : " + game.getCurrentPlayer().getColor().toString());
+        firstSelection = -1;
+        secondSelection = -1;
         super.repaint();
     }
 
