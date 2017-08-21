@@ -5,6 +5,7 @@ import thelearninggames.chess.core.Color;
 import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Move;
 import thelearninggames.chess.ui.GameUI;
+import thelearninggames.chess.ui.SwingUI;
 
 
 public class UIPlayer implements Player {
@@ -20,7 +21,7 @@ public class UIPlayer implements Player {
     public Move getMove(final GameState state) {
         int first = -1, second = -1;
         while(first == -1 || second == -1) {
-            Pair<Integer, Integer> p = GameUI.getLast2Clicks();
+            Pair<Integer, Integer> p = SwingUI.getLastMove();
             first = p.fst;
             second = p.snd;
             try {

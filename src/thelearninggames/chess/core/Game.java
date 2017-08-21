@@ -5,8 +5,7 @@ import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
 import thelearninggames.chess.ui.GameUI;
-
-import java.util.Collections;
+import thelearninggames.chess.ui.SwingUI;
 
 
 public class Game implements Runnable{
@@ -76,7 +75,7 @@ public class Game implements Runnable{
         if(state.at(to) != null && state.at(to).getColor() == state.at(from).getColor())
             return false;
         //Invalid move killing king
-        if(state.at(to).getPieceType() == PieceType.King)
+        if(state.at(to) != null && state.at(to).getPieceType() == PieceType.King)
             return false;
 
         if((p.getValidMoves(from / 8, from % 8, state.at(to) == null).stream().filter(a -> a == to).count() > 0))
