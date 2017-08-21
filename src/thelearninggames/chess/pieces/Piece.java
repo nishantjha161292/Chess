@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public interface Piece {
     Color getColor();
     PieceType getPieceType();
-    ArrayList<Move> getValidMoves(GameState state);
+    ArrayList<Integer> getValidMoves(int row, int col, boolean isToEmpty);
     int getPos();
     void setPos(int i);
 }

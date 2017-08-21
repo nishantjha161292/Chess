@@ -26,8 +26,9 @@ public class King implements Piece {
     }
 
     @Override
-    public ArrayList<Move> getValidMoves(GameState state) {
-        return null;
+    public ArrayList<Integer> getValidMoves(int row, int col, boolean isToEmpty) {
+        ArrayList<Integer> moves = new ArrayList<>();
+        return moves;
     }
 
     @Override

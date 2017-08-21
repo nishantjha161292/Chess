@@ -5,6 +5,8 @@ import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.player.Player;
 import thelearninggames.chess.ui.GameUI;
 
+import java.util.Collections;
+
 
 public class Game implements Runnable{
 
@@ -71,28 +73,10 @@ public class Game implements Runnable{
         if(state.at(to) != null && state.at(to).getColor() == state.at(from).getColor())
             return false;
 
-        switch(p.getPieceType()){
+        if((p.getValidMoves(from / 8, from % 8, state.at(to) == null).stream().filter(a -> a == to).count() > 0))
+            return true;
 
-            case Pawn:{
-                //Pawn can move two steps the first time.
-                if(to == from + 16 && p.getColor() == Color.WHITE && from >= 8 && from <= 15)
-                    return true;
-                else if(to == from - 16 && p.getColor() == Color.BLACK && from >= 48 && from <= 55)
-                    return true;
-                //Pawn taking single step
-                else if (to == from + 8 && p.getColor() == Color.WHITE && state.at(to) == null)
-                    return true;
-                else if ((to == from + 7 || to == from + 9) && p.getColor() == Color.WHITE && state.at(to) != null)
-                    return true;
-                else if (to == from - 8 && p.getColor() == Color.BLACK && state.at(to) == null)
-                    return true;
-                else if ((to == from - 7 || to == from - 9) && p.getColor() == Color.BLACK && state.at(to) != null)
-                    return true;
-                else
-                    return false;
-            }
-        }
-        return true;
+        return false;
     }
 
 }
