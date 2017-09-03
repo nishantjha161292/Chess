@@ -18,7 +18,7 @@ public class GameState {
         return isCheckMate;
     }
 
-    GameState(){
+    public GameState(){
 
         state = new Piece[64];
         ArrayList<Piece> pieces = PieceFactory.getInitialPieces();
@@ -118,7 +118,7 @@ public class GameState {
 
     }
 
-    Piece at(int i){
+    public Piece at(int i){
         return state[i];
     }
 
