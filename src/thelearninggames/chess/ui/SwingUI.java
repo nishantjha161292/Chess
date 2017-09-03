@@ -1,5 +1,6 @@
 package thelearninggames.chess.ui;
 import thelearninggames.chess.core.Game;
+import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.player.InputManager;
@@ -18,10 +19,13 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     private JPanel[] tiles;
     private JLabel[] pieces; // for test
     private JMenuBar menuBar;
+    private static int moveNumber = 0;
     public  static volatile int firstSelection = -1;
     public  static volatile int secondSelection = -1;
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
+    private GameState gs= new GameState();
+   
 
     public SwingUI() {
         super("Chess");
@@ -116,21 +120,26 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         JPanel p = (JPanel)e.getSource();
 
         int selection = Integer.parseInt(p.getName());
-        if(firstSelection == selection){
-            firstSelection = - 1;
-            secondSelection = -1;
-            p.setBorder(BorderFactory.createEmptyBorder());;
-        }
-        else if(firstSelection == -1){
-            firstSelection = selection;
-            p.setBorder(BorderFactory.createLineBorder(Color.CYAN));
-        }
-        else if(secondSelection == -1){
-            secondSelection = selection;
+        if(moveNumber%2 == 0){
+        	if(firstSelection == selection || game.getState().at(selection) == null || game.getState().at(selection).getColor() != game.getCurrentPlayer().getColor()){
+                firstSelection = - 1;
+                secondSelection = -1;
+                p.setBorder(BorderFactory.createEmptyBorder());
+            }
+        	else{
+        		firstSelection = selection;
+                p.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+                moveNumber++;
+        	}
+                
+            }
+       	else{
+       		secondSelection = selection;
             p.setBorder(BorderFactory.createLineBorder(Color.CYAN));
             if(firstSelection != -1)
                 tiles[firstSelection].setBorder(BorderFactory.createEmptyBorder());
-        }
+            moveNumber++;
+       	}
         if(prevselection != -1)
             tiles[prevselection].setBorder(BorderFactory.createEmptyBorder());
         prevselection = selection;
