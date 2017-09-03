@@ -1,6 +1,5 @@
 package thelearninggames.chess.ui;
 import thelearninggames.chess.core.Game;
-import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.player.InputManager;
@@ -19,13 +18,12 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     private JPanel[] tiles;
     private JLabel[] pieces; // for test
     private JMenuBar menuBar;
-    private static int moveNumber = 0;
+    private static volatile int moveNumber = 0;
     public  static volatile int firstSelection = -1;
     public  static volatile int secondSelection = -1;
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
-    private GameState gs= new GameState();
-   
+    
 
     public SwingUI() {
         super("Chess");
@@ -97,7 +95,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
                 pieces[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
             }
             else
-                pieces[i].setIcon(null);
+                pieces[i].setIcon(null); 
         }
         currentPlayer.setText("Current Player : " + game.getCurrentPlayer().getColor().toString());
         firstSelection = -1;
