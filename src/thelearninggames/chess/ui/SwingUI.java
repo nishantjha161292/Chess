@@ -24,7 +24,6 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
     
-
     public SwingUI() {
         super("Chess");
         game = new Game(this, PlayerFactory.getPlayers(this,this));
