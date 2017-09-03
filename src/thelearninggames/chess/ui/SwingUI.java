@@ -33,7 +33,8 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     public  static volatile int secondSelection = -1;
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
-    
+    Clip clip;
+
     public SwingUI() {
         super("Chess");
         game = new Game(this, PlayerFactory.getPlayers(this,this));
@@ -85,6 +86,8 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
                 if(t == null) {
                     t = new Thread(game);
                     t.start();
+                    clip.start();
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
                 }
             }
         });
@@ -95,11 +98,10 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         this.setVisible(true);
 
         try{
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("resource/203.wav"));
             clip.open(inputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
+
         }catch(Exception e){
             System.out.print("Sound Exception");
         }
