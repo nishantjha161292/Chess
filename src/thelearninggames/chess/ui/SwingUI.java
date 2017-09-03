@@ -94,7 +94,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
                 pieces[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
             }
             else
-                pieces[i].setIcon(null); 
+                pieces[i].setIcon(null);
         }
         currentPlayer.setText("Current Player : " + game.getCurrentPlayer().getColor().toString());
         firstSelection = -1;
