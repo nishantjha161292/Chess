@@ -19,20 +19,23 @@ public class Direction {
         this.col = col;
 
         CENTER = row * 8 + col;
-        UP = ((row + 1) * 8 + col);
-        DOWN = ((row - 1) * 8 + col);
-        RIGHT = (row * 8 + col + 1);
-        LEFT = (row * 8 + col - 1);
-        UPRIGHT = ((row + 1) * 8 + col + 1);
-        UPLEFT = ((row + 1) * 8 + col - 1);
-        DOWNRIGHT = ((row - 1) * 8 + col + 1);
-        DOWNLEFT = ((row - 1) * 8 + col - 1);
+        DOWN = ((row + 1) * 8 + col); //Forward in memory
+        UP = ((row - 1) * 8 + col); //Backward in memory
+        RIGHT = (row * 8 + col + 1); //Forward in memory
+        LEFT = (row * 8 + col - 1); // Backward in memory
+        DOWNRIGHT = ((row + 1) * 8 + col + 1);
+        DOWNLEFT = ((row + 1) * 8 + col - 1);
+        UPRIGHT = ((row - 1) * 8 + col + 1);
+        UPLEFT = ((row - 1) * 8 + col - 1);
+    }
+    Direction( Direction d){
+        this (d.CENTER / 8, d.CENTER % 8);
     }
 
     int getUP(int n){
         if(n < 1 || n > 8)
             return CENTER;
-        int temp = (row + n) * 8 + col;
+        int temp = (row - n) * 8 + col;
         if(temp > 63 )
             return CENTER;
         return temp;
@@ -41,7 +44,7 @@ public class Direction {
     int getDOWN( int n){
         if(n < 1 || n > 8)
             return CENTER;
-        int temp = (row - n) * 8 + col;
+        int temp = (row + n) * 8 + col;
         if(temp < 0)
             return CENTER;
         return temp;
@@ -59,7 +62,7 @@ public class Direction {
     int getLEFT( int n){
         if(n < 1 || n > 8)
             return CENTER;
-        int temp = (row + n) * 8 + col - n;
+        int temp = (row ) * 8 + col - n;
         if(temp > 63 || temp < 0)
             return CENTER;
         return temp;

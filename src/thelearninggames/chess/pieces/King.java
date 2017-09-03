@@ -58,23 +58,6 @@ public class King implements Piece {
             }
         }
         if(row == 0) {
-            moves.add( d.UP );
-            if(col == 0){
-                moves.add( d.UPRIGHT );
-                moves.add( d.RIGHT );
-            }
-            else if(col == 7){
-                moves.add( d.UPLEFT );
-                moves.add( d.LEFT );
-            }
-            else if (col > 0 && col < 7){
-                moves.add( d.UPRIGHT);
-                moves.add( d.UPLEFT);
-                moves.add( d.RIGHT);
-                moves.add( d.LEFT);
-            }
-        }
-        if(row == 7){
             moves.add( d.DOWN );
             if(col == 0){
                 moves.add( d.DOWNRIGHT );
@@ -87,6 +70,24 @@ public class King implements Piece {
             else if(col > 0 && col < 7){
                 moves.add( d.DOWNRIGHT);
                 moves.add( d.DOWNLEFT);
+                moves.add( d.RIGHT);
+                moves.add( d.LEFT);
+            }
+
+        }
+        if(row == 7){
+            moves.add( d.UP );
+            if(col == 0){
+                moves.add( d.UPRIGHT );
+                moves.add( d.RIGHT );
+            }
+            else if(col == 7){
+                moves.add( d.UPLEFT );
+                moves.add( d.LEFT );
+            }
+            else if (col > 0 && col < 7){
+                moves.add( d.UPRIGHT);
+                moves.add( d.UPLEFT);
                 moves.add( d.RIGHT);
                 moves.add( d.LEFT);
             }

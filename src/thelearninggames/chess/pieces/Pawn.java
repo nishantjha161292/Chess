@@ -32,24 +32,24 @@ public class Pawn implements Piece {
 
         //Move forward/backward when empty
         if(this.getColor() == Color.WHITE && row < 7 && isToEmpty)
-            moves.add( d.UP );
-        if(this.getColor() == Color.BLACK && row < 7 && isToEmpty)
             moves.add( d.DOWN );
+        if(this.getColor() == Color.BLACK && row < 7 && isToEmpty)
+            moves.add( d.UP );
         //Forward Diagonal for killing enemy
         if(this.getColor() == Color.WHITE && row < 7 && col < 7 && !isToEmpty)
-            moves.add( d.UPRIGHT );
+            moves.add( d.DOWNRIGHT );
         if(this.getColor() == Color.WHITE && row < 7 && col > 0 && !isToEmpty)
-            moves.add( d.UPLEFT );
+            moves.add( d.DOWNLEFT );
         //Backward Diagonal for killing enemy
         if(this.getColor() == Color.BLACK && row > 0 && col < 7 && !isToEmpty)
-            moves.add( d.DOWNRIGHT );
+            moves.add( d.UPRIGHT );
         if(this.getColor() == Color.BLACK && row > 0  && col > 0 && !isToEmpty)
-            moves.add( d.DOWNLEFT );
+            moves.add( d.UPLEFT );
         // move 2 steps from init location
         if(this.getColor() == Color.WHITE && row == 1)
-            moves.add( d.getUP(2) );
-        if(this.getColor() == Color.BLACK && row == 6)
             moves.add( d.getDOWN(2) );
+        if(this.getColor() == Color.BLACK && row == 6)
+            moves.add( d.getUP(2) );
 
         return moves;
     }

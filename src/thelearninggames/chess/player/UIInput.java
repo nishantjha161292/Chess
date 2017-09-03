@@ -16,13 +16,23 @@ public class UIInput implements InputManager {
         this.ui = ui;
     }
 
+    int from = -1;
+    int to = -1;
+
+    void update(){
+        Pair<Integer, Integer> move = ui.getLastMove();
+        from = move.fst;
+        to = move.snd;
+    }
+
     @Override
     public int getFrom() {
-        return ui.getLastMove().fst;
+        update();
+        return from;
     }
 
     @Override
     public int getTo() {
-        return ui.getLastMove().snd;
+        return to;
     }
 }

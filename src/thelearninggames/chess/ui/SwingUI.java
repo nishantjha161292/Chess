@@ -176,6 +176,9 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
 
             }
         }
-        return secondSelection;
+        int temp = secondSelection;
+        firstSelection = -1;
+        secondSelection = -1;
+        return temp;
     }
 }
