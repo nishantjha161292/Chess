@@ -1,7 +1,6 @@
 package thelearninggames.chess.ui;
 
-
-import com.sun.tools.javac.util.Pair;
+import thelearninggames.chess.core.Pair;
 
 public interface GameUI {
 

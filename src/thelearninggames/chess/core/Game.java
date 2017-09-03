@@ -1,6 +1,5 @@
 package thelearninggames.chess.core;
 
-import com.sun.tools.javac.util.Pair;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;

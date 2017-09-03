@@ -1,8 +1,8 @@
 package thelearninggames.chess.player;
 
-import com.sun.tools.javac.util.Pair;
 import jdk.internal.util.xml.impl.Input;
 import thelearninggames.chess.core.Color;
+import thelearninggames.chess.core.Pair;
 
 public class PlayerFactory {
 

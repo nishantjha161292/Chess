@@ -1,6 +1,6 @@
 package thelearninggames.chess.ui;
-import com.sun.tools.javac.util.Pair;
 import thelearninggames.chess.core.Game;
+import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.player.InputManager;
 import thelearninggames.chess.player.PlayerFactory;
