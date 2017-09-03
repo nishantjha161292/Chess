@@ -2,15 +2,15 @@ package thelearninggames.chess.ui;
 import com.sun.tools.javac.util.Pair;
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.pieces.Piece;
+import thelearninggames.chess.player.InputManager;
 import thelearninggames.chess.player.PlayerFactory;
-import thelearninggames.chess.player.PlayerType;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
 
-public class SwingUI extends JFrame implements MouseListener, GameUI{
+public class SwingUI extends JFrame implements MouseListener, GameUI, InputManager{
 
     private Thread t;
     private Game game;
@@ -25,7 +25,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI{
 
     public SwingUI() {
         super("Chess");
-        game = new Game(this, PlayerFactory.getPlayers(PlayerType.UI, PlayerType.UI));
+        game = new Game(this, PlayerFactory.getPlayers(this,this));
 
         this.setMinimumSize(new Dimension(550,550));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,7 +101,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI{
         super.repaint();
     }
 
-    public static Pair<Integer,Integer> getLastMove(){
+    public Pair<Integer,Integer> getLastMove(){
         int first = firstSelection;
         int second = secondSelection;
         if(first != -1 && second != -1) {
@@ -153,5 +153,29 @@ public class SwingUI extends JFrame implements MouseListener, GameUI{
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public int getFrom() {
+        while(firstSelection == -1){
+            try {
+                Thread.sleep(500);
+            }catch(InterruptedException e){
+
+            }
+        }
+        return firstSelection;
+    }
+
+    @Override
+    public int getTo() {
+        while(secondSelection == -1){
+            try {
+                Thread.sleep(500);
+            }catch(InterruptedException e){
+
+            }
+        }
+        return secondSelection;
     }
 }
