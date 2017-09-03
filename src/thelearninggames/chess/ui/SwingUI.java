@@ -1,14 +1,24 @@
 package thelearninggames.chess.ui;
+import sun.audio.AudioData;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import sun.audio.ContinuousAudioDataStream;
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.player.InputManager;
 import thelearninggames.chess.player.PlayerFactory;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class SwingUI extends JFrame implements MouseListener, GameUI, InputManager{
 
@@ -83,6 +93,17 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         this.add(menuBar,BorderLayout.PAGE_START);
         this.add(board,BorderLayout.CENTER);
         this.setVisible(true);
+
+        try{
+            Clip clip = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("resource/203.wav"));
+            clip.open(inputStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+        }catch(Exception e){
+            System.out.print("Sound Exception");
+        }
+
     }
 
     @Override
