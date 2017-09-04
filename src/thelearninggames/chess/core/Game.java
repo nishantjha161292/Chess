@@ -35,7 +35,7 @@ public class Game implements Runnable{
     }
 
     public void run(){
-    	ui.update(currentPlayer,state);
+    	ui.updateBoard(currentPlayer,state);
         while(status == Status.Running){
         	while(!ui.moveDidHappen()){
         		try {
@@ -53,8 +53,8 @@ public class Game implements Runnable{
                 }
             	currentPlayer = (currentPlayer == white)? black : white;
             }	
-            	ui.update(currentPlayer,state);
-                draw();
+            ui.updateBoard(currentPlayer,state);
+           //draw();
                 
             
             

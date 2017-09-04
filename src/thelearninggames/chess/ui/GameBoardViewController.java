@@ -17,7 +17,6 @@ public class GameBoardViewController implements MouseListener{
 		return object;
 	}
 
-
 	@Override
 	public synchronized void  mouseClicked(MouseEvent e) {
 	    JPanel p = (JPanel)e.getSource();

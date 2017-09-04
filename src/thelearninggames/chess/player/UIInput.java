@@ -10,20 +10,18 @@ public class UIInput implements InputManager {
 
     public void update(){
         Pair<Integer, Integer> move = GameBoardServices.getObject().getLastMove();
-        System.out.println("in update");
+        System.out.println("Moving from: "+ from+ "  to: "+ to);
         from = move.fst;
         to = move.snd;
     }
 
     @Override
     public int getFrom() {
-        System.out.println(from);
         return from;
     }
 
     @Override
     public int getTo() {
-    	System.out.println(to);
         return to;
     }
 }
