@@ -1,12 +1,13 @@
 package thelearninggames.chess.ui;
 
-import javax.swing.JPanel;
 import thelearninggames.chess.core.Game;
+import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.player.InputManager;
+import thelearninggames.chess.player.Player;
 import thelearninggames.chess.player.PlayerFactory;
 
-public class GameBoardServices implements InputManager {
+public class GameBoardServices implements InputManager,ChessBoard {
 
 	private static volatile int moveNumber = 0;
 	private  static volatile int firstSelection = -1;
@@ -14,7 +15,7 @@ public class GameBoardServices implements InputManager {
 	private static volatile int prevselection = -1;
 	private Thread t;
 	private Game game;
-	private ChessBoard board;
+	private Chess board;
 
 	private static GameBoardServices object;
 	
@@ -66,44 +67,48 @@ public class GameBoardServices implements InputManager {
 	    return temp;
 	}
 
-	public void playMove(JPanel p,int selection){
+	public void playMove(int selection){
 		
 		if(moveNumber%2 == 0){
 	    	if(firstSelection == selection || game.getState().at(selection) == null || game.getState().at(selection).getColor() != game.getCurrentPlayer().getColor()){
 	            firstSelection = - 1;
 	            secondSelection = -1;
-	            board.unselectSquare(selection);    }
+	            board.unsetSquare(selection);   
+	        }
 	    	else{
 	    		firstSelection = selection;
-	            board.selectSquare(selection);
+	            board.setSquare(selection);
 	            moveNumber++;
 	    	}        
 	    }
 	   	else{
 	   		
 	   		secondSelection = selection;
-	   		board.selectSquare(selection);
+	   		board.setSquare(selection);
 	        moveNumber++;
 	   	}
 	    if(prevselection != -1)
-	        board.unselectSquare(prevselection);
+	        board.unsetSquare(prevselection);
 	    prevselection = selection;
 	}
 
 	public void startGame(){
-		
         if(t == null) {
-        	board = ChessBoard.newGame();
-        	game = new Game(board, PlayerFactory.getPlayers(this,this));
+        	board = Chess.newGame();
+        	game = new Game(object, PlayerFactory.getPlayers(this,this));
             System.out.print("Game Started");
             t = new Thread(game);
             t.start();
-           
         }
         else{
         	System.out.print("Game Running");
         }
-        
-
+	}
+	
+	@Override
+	public void update(Player currentPlayer, GameState state) {
+		board.setCurrentPlayer(currentPlayer.getColor().toString());
+		board.repaint(state);
+		
 	}
 }

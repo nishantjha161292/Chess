@@ -22,7 +22,7 @@ public class GameBoardViewController implements MouseListener{
 	public synchronized void  mouseClicked(MouseEvent e) {
 	    JPanel p = (JPanel)e.getSource();
 	    int selection = Integer.parseInt(p.getName());
-	    GameBoardServices.getObject().playMove(p, selection);
+	    GameBoardServices.getObject().playMove(selection);
 	    
 	}
 	

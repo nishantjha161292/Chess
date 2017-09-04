@@ -3,7 +3,6 @@ package thelearninggames.chess.core;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
-import thelearninggames.chess.ui.Chess;
 import thelearninggames.chess.ui.ChessBoard;
 
 
@@ -16,9 +15,9 @@ public class Game implements Runnable{
     Player black;
     Player currentPlayer;
     Player winner;
-    Chess ui;
+    ChessBoard ui;
     
-    public Game(Chess ui, Pair<Player,Player> pair){
+    public Game(ChessBoard ui, Pair<Player,Player> pair){
         status = Status.Running;
         state = new GameState();
         white = pair.fst;
@@ -36,22 +35,23 @@ public class Game implements Runnable{
     }
 
     public void run(){
-        ChessBoard.newGame().repaint(state);
+    	ui.update(currentPlayer,state);
         while(status == Status.Running){
 
             Move m = currentPlayer.getMove(state);
-            if(validateMove(m))
-                state.add(m);
-            else
-                continue;
-            if(state.isCheckMate()){
-                status = Status.Over;
-                winner = currentPlayer;
+            if(validateMove(m)){
+            	state.add(m);
+            	if(state.isCheckMate()){
+                    status = Status.Over;
+                    winner = currentPlayer;
+                }
+            	currentPlayer = (currentPlayer == white)? black : white;
+            	ui.update(currentPlayer,state);
+                draw();
             }
-            currentPlayer = (currentPlayer == white)? black : white;
-            ui.setCurrentPlayer(currentPlayer.getColor().toString());
-            ui.repaint(state);
-            draw();
+            
+           // Chess.newGame().repaint(state);
+           
         }
     }
 
