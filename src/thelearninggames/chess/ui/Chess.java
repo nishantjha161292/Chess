@@ -1,13 +1,9 @@
 package thelearninggames.chess.ui;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.pieces.Piece;
-import thelearninggames.chess.player.Player;
 
 import java.awt.*;
 import java.awt.event.*;

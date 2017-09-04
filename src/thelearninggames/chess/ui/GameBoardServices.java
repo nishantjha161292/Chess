@@ -20,9 +20,7 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	private Thread t;
 	private Game game;
 	private Chess board;
-	private static Clip clip;
-   
-
+	private static Clip clip;   
 
 	private static GameBoardServices object;
 	
@@ -91,7 +89,6 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	   	else{
 	   		
 	   		secondSelection = selection;
-	   		board.setSquare(selection);
 	        moveNumber++;
 	   	}
 	    if(prevselection != -1)
@@ -99,6 +96,7 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	    prevselection = selection;
 	}
 
+	@Override
 	public void startGame(){
         if(t == null) {
         	board = Chess.newGame();
