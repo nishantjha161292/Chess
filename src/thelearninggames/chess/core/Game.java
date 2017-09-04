@@ -37,7 +37,6 @@ public class Game implements Runnable{
     public void run(){
     	ui.update(currentPlayer,state);
         while(status == Status.Running){
-        	System.out.println("start");
         	while(!ui.moveDidHappen()){
         		try {
     	            Thread.sleep(500);
@@ -46,7 +45,6 @@ public class Game implements Runnable{
     	        }
         	}
             Move m = currentPlayer.getMove(state);
-            System.out.println("end");
             if(validateMove(m)){
             	state.add(m);
             	if(state.isCheckMate()){

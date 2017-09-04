@@ -97,12 +97,12 @@ public class Chess extends JFrame{
 		return object;
 	}
 	
-	public void setSquare(int squareNumber){
+	public void selectSquare(int squareNumber){
 		JPanel p =tiles[squareNumber];
 		p.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 	}
 	
-	public void unsetSquare(int squareNumber){
+	public void removeSelection(int squareNumber){
 		JPanel p =tiles[squareNumber];
 		p.setBorder(BorderFactory.createEmptyBorder());
 	}

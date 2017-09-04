@@ -87,14 +87,12 @@ public class GameBoardServices implements InputManager,ChessBoard {
 				if(game.getState().at(selection) == null || game.getState().at(selection).getColor() != game.getCurrentPlayer().getColor()){
 		            firstSelection = - 1;
 		            secondSelection = -1;
-		            board.unsetSquare(selection);   
-		            System.out.println("1");
+		            board.removeSelection(selection); 
 		        }
 				else{
 					firstSelection = selection;
-		            board.setSquare(selection);
+		            board.selectSquare(selection);
 		            moveNumber++;
-		            System.out.println("2");
 				}
 			}       
 	    }
@@ -104,8 +102,7 @@ public class GameBoardServices implements InputManager,ChessBoard {
 		   			if(game.getState().at(selection).getColor() == game.getCurrentPlayer().getColor()){
 		   				firstSelection = selection;
 			            secondSelection = -1;
-			            board.setSquare(selection);
-			            System.out.println("3");
+			            board.selectSquare(selection);
 		   			}
 		   				
 		   		}
@@ -114,15 +111,14 @@ public class GameBoardServices implements InputManager,ChessBoard {
 			        moveNumber++;
 			        inp.update();
 			        moved = true;
-			        System.out.println("4");
-		   		}
+			    }
 	   		}
 	   		
 	   			
 	   		
 	   	}
 	    if(prevselection != -1)
-	        board.unsetSquare(prevselection);
+	        board.removeSelection(prevselection);
 	    prevselection = selection;
 	}
 
