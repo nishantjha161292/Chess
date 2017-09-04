@@ -5,23 +5,25 @@ import thelearninggames.chess.ui.GameBoardServices;
 
 public class UIInput implements InputManager {
 
-    int from = -1;
-    int to = -1;
+    int from = 0;
+    int to = 0;
 
-    void update(){
+    public void update(){
         Pair<Integer, Integer> move = GameBoardServices.getObject().getLastMove();
+        System.out.println("in update");
         from = move.fst;
         to = move.snd;
     }
 
     @Override
     public int getFrom() {
-        update();
+        System.out.println(from);
         return from;
     }
 
     @Override
     public int getTo() {
+    	System.out.println(to);
         return to;
     }
 }

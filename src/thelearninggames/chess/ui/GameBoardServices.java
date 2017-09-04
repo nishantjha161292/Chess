@@ -10,6 +10,7 @@ import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.player.InputManager;
 import thelearninggames.chess.player.Player;
 import thelearninggames.chess.player.PlayerFactory;
+import thelearninggames.chess.player.UIInput;
 
 public class GameBoardServices implements InputManager,ChessBoard {
 
@@ -21,9 +22,10 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	private Game game;
 	private Chess board;
 	private static Clip clip;   
+	private boolean moved = false;
 
 	private static GameBoardServices object;
-	
+	private UIInput inp = new UIInput();
 
 	public static GameBoardServices getObject() {
 		if(object != null){
@@ -71,25 +73,53 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	    secondSelection = -1;
 	    return temp;
 	}
+	
+	@Override
+	public  boolean moveDidHappen(){
+		return moved;
+		
+	}
 
 	public void playMove(int selection){
 		
 		if(moveNumber%2 == 0){
-	    	if(firstSelection == selection || game.getState().at(selection) == null || game.getState().at(selection).getColor() != game.getCurrentPlayer().getColor()){
-	            firstSelection = - 1;
-	            secondSelection = -1;
-	            board.unsetSquare(selection);   
-	        }
-	    	else{
-	    		firstSelection = selection;
-	            board.setSquare(selection);
-	            moveNumber++;
-	    	}        
+			if(firstSelection == -1){
+				if(game.getState().at(selection) == null || game.getState().at(selection).getColor() != game.getCurrentPlayer().getColor()){
+		            firstSelection = - 1;
+		            secondSelection = -1;
+		            board.unsetSquare(selection);   
+		            System.out.println("1");
+		        }
+				else{
+					firstSelection = selection;
+		            board.setSquare(selection);
+		            moveNumber++;
+		            System.out.println("2");
+				}
+			}       
 	    }
 	   	else{
+	   		if(secondSelection == -1){
+	   			if(game.getState().at(selection) != null){
+		   			if(game.getState().at(selection).getColor() == game.getCurrentPlayer().getColor()){
+		   				firstSelection = selection;
+			            secondSelection = -1;
+			            board.setSquare(selection);
+			            System.out.println("3");
+		   			}
+		   				
+		   		}
+		   		else{
+		   			secondSelection = selection;
+			        moveNumber++;
+			        inp.update();
+			        moved = true;
+			        System.out.println("4");
+		   		}
+	   		}
 	   		
-	   		secondSelection = selection;
-	        moveNumber++;
+	   			
+	   		
 	   	}
 	    if(prevselection != -1)
 	        board.unsetSquare(prevselection);
@@ -100,7 +130,7 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	public void startGame(){
         if(t == null) {
         	board = Chess.newGame();
-        	game = new Game(object, PlayerFactory.getPlayers(this,this));
+        	game = new Game(object, PlayerFactory.getPlayers(inp,inp));
             System.out.print("Game Started");
             t = new Thread(game);
             t.start();
@@ -132,6 +162,7 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	public void update(Player currentPlayer, GameState state) {
 		board.setCurrentPlayer(currentPlayer.getColor().toString());
 		board.repaint(state);
+		moved = false;
 		
 	}
 }

@@ -8,4 +8,5 @@ public interface ChessBoard {
 	void update(Player currentPlayer, GameState state);
 
 	void startGame();
+	 boolean moveDidHappen();
 }
