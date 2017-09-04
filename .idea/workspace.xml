@@ -7,9 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6d51b5c-1792-48c1-b8e2-ca191e2c81a0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/thelearninggames/chess/core/Game.java" afterPath="$PROJECT_DIR$/src/thelearninggames/chess/core/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Bishop.java" afterPath="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Bishop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Direction.java" afterPath="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Direction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java" afterPath="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -52,19 +49,26 @@
       <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/core/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+            <state relative-caret-position="609">
+              <caret line="102" column="21" lean-forward="true" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Rook.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Rook.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="503">
-              <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
-              <folding />
+            <state relative-caret-position="475">
+              <caret line="57" column="30" lean-forward="true" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
+              <folding>
+                <marker date="1504541023000" expanded="false" signature="1383:1394" ph=" { " />
+                <marker date="1504541023000" expanded="false" signature="1416:1422" ph=" }" />
+                <marker date="1504541023000" expanded="false" signature="1466:1476" ph=" { " />
+                <marker date="1504541023000" expanded="false" signature="1487:1493" ph=" }" />
+                <marker date="1504541023000" expanded="false" signature="1516:1526" ph=" { " />
+                <marker date="1504541023000" expanded="false" signature="1545:1551" ph=" }" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -85,8 +89,8 @@
       <file leaf-file-name="Bishop.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Bishop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+            <state relative-caret-position="515">
+              <caret line="63" column="9" lean-forward="true" selection-start-line="35" selection-start-column="8" selection-end-line="63" selection-end-column="9" />
               <folding>
                 <element signature="e#512#513#0" expanded="true" />
                 <element signature="e#551#552#0" expanded="true" />
@@ -95,11 +99,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Direction.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Direction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Direction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="49" column="5" lean-forward="true" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+            <state relative-caret-position="405">
+              <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -219,8 +223,8 @@
         <option value="$PROJECT_DIR$/src/thelearninggames/chess/ui/SwingUI.java" />
         <option value="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Bishop.java" />
         <option value="$PROJECT_DIR$/src/thelearninggames/chess/core/Game.java" />
-        <option value="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java" />
         <option value="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Direction.java" />
+        <option value="$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java" />
       </list>
     </option>
   </component>
@@ -377,9 +381,9 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.49761903" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329" sideWeight="0.50238097" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.247" sideWeight="0.50476193" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.247" sideWeight="0.49761903" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.247" sideWeight="0.4952381" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -727,26 +731,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java">
+    <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Direction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="503">
-          <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
+        <state relative-caret-position="405">
+          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/core/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+        <state relative-caret-position="609">
+          <caret line="102" column="21" lean-forward="true" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Bishop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+        <state relative-caret-position="515">
+          <caret line="63" column="9" lean-forward="true" selection-start-line="35" selection-start-column="8" selection-end-line="63" selection-end-column="9" />
           <folding>
             <element signature="e#512#513#0" expanded="true" />
             <element signature="e#551#552#0" expanded="true" />
@@ -754,11 +758,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Direction.java">
+    <entry file="file://$PROJECT_DIR$/src/thelearninggames/chess/pieces/Rook.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="49" column="5" lean-forward="true" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-          <folding />
+        <state relative-caret-position="475">
+          <caret line="57" column="30" lean-forward="true" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
+          <folding>
+            <marker date="1504541023000" expanded="false" signature="1383:1394" ph=" { " />
+            <marker date="1504541023000" expanded="false" signature="1416:1422" ph=" }" />
+            <marker date="1504541023000" expanded="false" signature="1466:1476" ph=" { " />
+            <marker date="1504541023000" expanded="false" signature="1487:1493" ph=" }" />
+            <marker date="1504541023000" expanded="false" signature="1516:1526" ph=" { " />
+            <marker date="1504541023000" expanded="false" signature="1545:1551" ph=" }" />
+          </folding>
         </state>
       </provider>
     </entry>

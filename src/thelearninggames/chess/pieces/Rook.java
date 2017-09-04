@@ -29,6 +29,35 @@ public class Rook implements Piece {
     public ArrayList<Integer> getValidMoves(int row, int col, boolean isToEmpty) {
 
         ArrayList<Integer> moves = new ArrayList<>();
+        Direction d = new Direction(row, col);
+        int temp = d.RIGHT;
+        int i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getRIGHT(i);
+            i++;
+        }
+        temp = d.LEFT;
+        i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getLEFT(i);
+            i++;
+        }
+        temp = d.DOWN;
+        i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getDOWN(i);
+            i++;
+        }
+        temp = d.UP;
+        i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getUP(i);
+            i++;
+        }
         return moves;
     }
 
