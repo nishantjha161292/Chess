@@ -1,11 +1,8 @@
 package thelearninggames.chess.player;
 
-import thelearninggames.chess.core.Color;
-import thelearninggames.chess.core.GameState;
-import thelearninggames.chess.core.Move;
+
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.ui.GameUI;
-import thelearninggames.chess.ui.SwingUI;
 
 
 public class UIInput implements InputManager {

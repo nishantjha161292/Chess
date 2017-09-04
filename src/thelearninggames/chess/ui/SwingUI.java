@@ -1,12 +1,10 @@
 package thelearninggames.chess.ui;
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.player.InputManager;
+import thelearninggames.chess.player.NetworkInputOutput;
+import thelearninggames.chess.player.OutputManager;
 import thelearninggames.chess.player.PlayerFactory;
 
 import javax.sound.sampled.AudioInputStream;
@@ -16,9 +14,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class SwingUI extends JFrame implements MouseListener, GameUI, InputManager{
 
@@ -28,20 +23,90 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     private JPanel[] tiles;
     private JLabel[] pieces; // for test
     private JMenuBar menuBar;
+    private JMenu multiplayer ;
+    private JMenuItem server ;
+    private JMenuItem client ;
+    private JMenuItem start;
     private static volatile int moveNumber = 0;
     public  static volatile int firstSelection = -1;
     public  static volatile int secondSelection = -1;
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
     Clip clip;
+    InputManager iplayer1 = this;
+    InputManager iplayer2 = this;
+    OutputManager oplayer1 = null;
+    OutputManager oplayer2 = null;
+    boolean startWithWhite = true;
+    SwingUI that = this;
 
     public SwingUI() {
         super("Chess");
-        game = new Game(this, PlayerFactory.getPlayers(this,this));
-
         this.setMinimumSize(new Dimension(550,550));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+        drawMenuBar();
+        start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initGame();
+                startgame();
+            }
+        });
+        server.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NetworkInputOutput n = new NetworkInputOutput();
+                iplayer2 = n;
+                oplayer1 = n;
+                initGame();
+                startgame();
+            }
+        });
+        client.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ip = JOptionPane.showInputDialog("Enter IP address of server","127.0.0.1");
+                NetworkInputOutput n = new NetworkInputOutput(ip);
+                iplayer1 = n;
+                oplayer2 = n;
+                startWithWhite = !startWithWhite;
+                initGame();
+                startgame();
+            }
+        });
+        this.setVisible(true);
+    }
+
+    void initGame(){
+        game = new Game(this, PlayerFactory.getPlayers(iplayer1,oplayer1,iplayer2,oplayer2));
+        drawBoard();
+        initMusic();
+    }
+
+    void startgame(){
+        if(t == null) {
+            t = new Thread(game);
+            t.start();
+        }
+    }
+
+    void drawMenuBar(){
+        menuBar = new JMenuBar();
+        start = new JMenuItem("SinglePlayer");
+        multiplayer = new JMenu("Multiplayer");
+        server = new JMenuItem("Create Game");
+        client = new JMenuItem("Join Game");
+        menuBar.add(start);
+        menuBar.add(currentPlayer);
+        multiplayer.add(server);
+        multiplayer.add(client);
+        menuBar.add(multiplayer);
+        this.add(menuBar,BorderLayout.PAGE_START);
+    }
+
+    void drawBoard(){
+
         board = new JPanel();
         board.setBackground(Color.DARK_GRAY);
         board.setMinimumSize(new Dimension(500,500));
@@ -49,7 +114,6 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         tiles = new JPanel[64];
         pieces = new JLabel[64];
 
-        boolean startWithWhite = true;
         for(int i = 0; i < 64; i++){
             pieces[i] = new JLabel();
             pieces[i].setForeground(Color.CYAN);
@@ -76,27 +140,10 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
 
             board.add(tiles[i]);
         }
-
-        menuBar = new JMenuBar();
-        JMenuItem start = new JMenuItem("Start");
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.print("Game Running");
-                if(t == null) {
-                    t = new Thread(game);
-                    t.start();
-                    clip.start();
-                    clip.loop(Clip.LOOP_CONTINUOUSLY);
-                }
-            }
-        });
-        menuBar.add(start);
-        menuBar.add(currentPlayer);
-        this.add(menuBar,BorderLayout.PAGE_START);
         this.add(board,BorderLayout.CENTER);
-        this.setVisible(true);
+    }
 
+    void initMusic(){
         try{
             clip = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("resource/203.wav"));
@@ -105,8 +152,14 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         }catch(Exception e){
             System.out.print("Sound Exception");
         }
-
     }
+
+    void runMusic(){
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+
 
     @Override
     public void repaint() {
