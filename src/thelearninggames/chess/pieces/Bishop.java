@@ -33,7 +33,37 @@ public class Bishop implements Piece {
     @Override
     public ArrayList<Integer> getValidMoves(int row, int col, boolean isToEmpty) {
         ArrayList<Integer> moves = new ArrayList<>();
+        Direction d = new Direction(row, col);
+        int temp = d.UPRIGHT;
+        int i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getUPRIGHT(i);
+            i++;
+        }
+        temp = d.UPLEFT;
+        i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getUPLEFT(i);
+            i++;
+        }
+        temp = d.DOWNRIGHT;
+        i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getDOWNRIGHT(i);
+            i++;
+        }
+        temp = d.DOWNLEFT;
+        i = 2;
+        while(temp != d.CENTER){
+            moves.add(temp);
+            temp = d.getDOWNLEFT(i);
+            i++;
+        }
         return moves;
+
     }
 
     @Override

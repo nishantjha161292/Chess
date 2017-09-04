@@ -77,9 +77,29 @@ public class Game implements Runnable{
         if(state.at(to) != null && state.at(to).getPieceType() == PieceType.King)
             return false;
 
-        if((p.getValidMoves(from / 8, from % 8, state.at(to) == null).stream().filter(a -> a == to).count() > 0))
-            return true;
+        if((p.getValidMoves(from / 8, from % 8, state.at(to) == null).stream().filter(a -> a == to).count() > 0)){
 
+            //Also check if any piece is jumping over another piece
+            if(p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen){
+                return !isPathBlocked(from,to);
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isPathBlocked(int from, int to){
+        if(from / 8 == to / 8){ // in same row
+            System.out.print("Same Row");
+        }
+        else if(from % 8 == to % 8){ // in same column
+            System.out.print("Same Column");
+        }
+        else if (Math.abs(from /8 - to /8) == Math.abs(from % 8 - to % 8)){ // same diagonal
+            System.out.print("Same Diagonal");
+        }
         return false;
     }
 
