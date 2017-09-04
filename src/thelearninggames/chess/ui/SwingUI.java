@@ -204,7 +204,6 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     @Override
     public synchronized void mouseClicked(MouseEvent e) {
         JPanel p = (JPanel)e.getSource();
-        System.out.print("Mousse clicked");
 
         int selection = Integer.parseInt(p.getName());
         if(moveNumber%2 == 0){
