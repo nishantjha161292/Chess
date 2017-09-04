@@ -76,6 +76,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
             }
         });
         this.setVisible(true);
+        initMusic();
     }
 
     void initGame(){
@@ -89,6 +90,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
             t = new Thread(game);
             t.start();
         }
+        runMusic();
     }
 
     void drawMenuBar(){
