@@ -49,7 +49,6 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                initGame();
                 startgame();
             }
         });
@@ -59,7 +58,6 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
                 NetworkInputOutput n = new NetworkInputOutput();
                 iplayer2 = n;
                 oplayer1 = n;
-                initGame();
                 startgame();
             }
         });
@@ -70,8 +68,6 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
                 NetworkInputOutput n = new NetworkInputOutput(ip);
                 iplayer1 = n;
                 oplayer2 = n;
-                startWithWhite = !startWithWhite;
-                initGame();
                 startgame();
             }
         });
@@ -79,13 +75,10 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         initMusic();
     }
 
-    void initGame(){
+    void startgame(){
         game = new Game(this, PlayerFactory.getPlayers(iplayer1,oplayer1,iplayer2,oplayer2));
         drawBoard();
         initMusic();
-    }
-
-    void startgame(){
         if(t == null) {
             t = new Thread(game);
             t.start();
