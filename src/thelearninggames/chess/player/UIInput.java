@@ -1,26 +1,15 @@
 package thelearninggames.chess.player;
-
-import thelearninggames.chess.core.Color;
-import thelearninggames.chess.core.GameState;
-import thelearninggames.chess.core.Move;
 import thelearninggames.chess.core.Pair;
-import thelearninggames.chess.ui.GameUI;
-import thelearninggames.chess.ui.SwingUI;
+import thelearninggames.chess.ui.GameBoardServices;
 
 
 public class UIInput implements InputManager {
-
-    GameUI ui;
-
-    UIInput(GameUI ui){
-        this.ui = ui;
-    }
 
     int from = -1;
     int to = -1;
 
     void update(){
-        Pair<Integer, Integer> move = ui.getLastMove();
+        Pair<Integer, Integer> move = GameBoardServices.getObject().getLastMove();
         from = move.fst;
         to = move.snd;
     }

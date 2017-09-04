@@ -1,6 +1,5 @@
 package thelearninggames.chess.player;
 
-import jdk.internal.util.xml.impl.Input;
 import thelearninggames.chess.core.Color;
 import thelearninggames.chess.core.Pair;
 

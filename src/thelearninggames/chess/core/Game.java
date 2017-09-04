@@ -3,8 +3,8 @@ package thelearninggames.chess.core;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
-import thelearninggames.chess.ui.GameUI;
-import thelearninggames.chess.ui.SwingUI;
+import thelearninggames.chess.ui.Chess;
+import thelearninggames.chess.ui.ChessBoard;
 
 
 public class Game implements Runnable{
@@ -16,9 +16,9 @@ public class Game implements Runnable{
     Player black;
     Player currentPlayer;
     Player winner;
-    GameUI ui;
-
-    public Game(GameUI ui, Pair<Player,Player> pair){
+    Chess ui;
+    
+    public Game(Chess ui, Pair<Player,Player> pair){
         status = Status.Running;
         state = new GameState();
         white = pair.fst;
@@ -36,7 +36,7 @@ public class Game implements Runnable{
     }
 
     public void run(){
-        ui.repaint();
+        ChessBoard.newGame().repaint(state);
         while(status == Status.Running){
 
             Move m = currentPlayer.getMove(state);
@@ -49,7 +49,8 @@ public class Game implements Runnable{
                 winner = currentPlayer;
             }
             currentPlayer = (currentPlayer == white)? black : white;
-            ui.repaint();
+            ui.setCurrentPlayer(currentPlayer.getColor().toString());
+            ui.repaint(state);
             draw();
         }
     }
@@ -82,5 +83,6 @@ public class Game implements Runnable{
 
         return false;
     }
-
+    
+    
 }

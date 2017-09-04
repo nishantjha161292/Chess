@@ -1,12 +1,13 @@
 package thelearninggames.chess;
 
-import thelearninggames.chess.ui.GameUI;
-import thelearninggames.chess.ui.SwingUI;
+import thelearninggames.chess.ui.Chess;
+import thelearninggames.chess.ui.ChessBoard;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        GameUI ui = new SwingUI();
+        Chess newGame = ChessBoard.newGame();
+        
     }
 }
