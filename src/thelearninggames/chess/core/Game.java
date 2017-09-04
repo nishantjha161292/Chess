@@ -16,15 +16,13 @@ public class Game implements Runnable{
     Player black;
     Player currentPlayer;
     Player winner;
-    GameUI ui;
 
-    public Game(GameUI ui, Pair<Player,Player> pair){
+    public Game(Pair<Player,Player> pair){
         status = Status.Running;
         state = new GameState();
         white = pair.fst;
         black = pair.snd;
         currentPlayer = white;
-        this.ui = ui;
     }
 
     void draw(){
@@ -36,7 +34,6 @@ public class Game implements Runnable{
     }
 
     public void run(){
-        ui.repaint();
         while(status == Status.Running){
 
             Move m = currentPlayer.getMove(state);
@@ -49,7 +46,6 @@ public class Game implements Runnable{
                 winner = currentPlayer;
             }
             currentPlayer = (currentPlayer == white)? black : white;
-            ui.repaint();
             draw();
         }
     }

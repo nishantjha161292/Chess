@@ -1,10 +1,11 @@
 package thelearninggames.chess.ui;
+import thelearninggames.chess.InputOutput.UIInput;
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.pieces.Piece;
-import thelearninggames.chess.player.InputManager;
-import thelearninggames.chess.player.NetworkInputOutput;
-import thelearninggames.chess.player.OutputManager;
+import thelearninggames.chess.InputOutput.InputManager;
+import thelearninggames.chess.InputOutput.NetworkInputOutput;
+import thelearninggames.chess.InputOutput.OutputManager;
 import thelearninggames.chess.player.PlayerFactory;
 
 import javax.sound.sampled.AudioInputStream;
@@ -15,7 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SwingUI extends JFrame implements MouseListener, GameUI, InputManager{
+public class SwingUI extends JFrame implements MouseListener, GameUI {
 
     private Thread t;
     private Game game;
@@ -33,12 +34,16 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
     Clip clip;
-    InputManager iplayer1 = this;
-    InputManager iplayer2 = this;
-    OutputManager oplayer1 = null;
-    OutputManager oplayer2 = null;
+    UIInput ui = new UIInput(this);
+
+    InputManager iplayer1 = ui;
+    InputManager iplayer2 = ui;
+    OutputManager oplayer1 = ui;
+    OutputManager oplayer2 = ui;
     boolean startWithWhite = true;
     SwingUI that = this;
+    Piece[] state;
+    Timer timer;
 
     public SwingUI() {
         super("Chess");
@@ -73,17 +78,28 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
         });
         this.setVisible(true);
         initMusic();
+        timer = new Timer(100, repainter);
+        timer.setRepeats(true);
+        timer.start();
     }
 
-    void startgame(){
-        game = new Game(this, PlayerFactory.getPlayers(iplayer1,oplayer1,iplayer2,oplayer2));
-        drawBoard();
-        initMusic();
-        if(t == null) {
-            t = new Thread(game);
-            t.start();
+    private ActionListener repainter = new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            repaint();
         }
-        runMusic();
+    };
+
+    void startgame(){
+        Thread.currentThread().setPriority(8);
+        if(t == null) {
+            game = new Game(PlayerFactory.getPlayers(iplayer1,oplayer1,iplayer2,oplayer2));
+            drawBoard();
+            initMusic();
+            t = new Thread(game);
+            t.setPriority(4);
+            t.start();
+            runMusic();
+        }
     }
 
     void drawMenuBar(){
@@ -158,34 +174,37 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
 
     @Override
     public void repaint() {
-        Piece[] state = game.getState().getState();
-        for(int i = 0; i < 64; i ++) {
-            if(state[i] != null){
-                String filename = "resource/"+state[i].toString()+state[i].getColor().toString()+".png";
-                pieces[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
+        if(game != null) {
+            state = game.getState().getState();
+            for (int i = 0; i < 64; i++) {
+                if (state[i] != null) {
+                    String filename = "resource/" + state[i].toString() + state[i].getColor().toString() + ".png";
+                    pieces[i].setIcon(new ImageIcon(getClass().getClassLoader().getResource(filename)));
+                } else
+                    pieces[i].setIcon(null);
             }
-            else
-                pieces[i].setIcon(null);
+            currentPlayer.setText("Current Player : " + game.getCurrentPlayer().getColor().toString());
         }
-        currentPlayer.setText("Current Player : " + game.getCurrentPlayer().getColor().toString());
-        firstSelection = -1;
-        secondSelection = -1;
         super.repaint();
     }
 
     public Pair<Integer,Integer> getLastMove(){
         int first = firstSelection;
         int second = secondSelection;
-        if(first != -1 && second != -1) {
+
+        if(first != -1 && second != -1){
             firstSelection = -1;
             secondSelection = -1;
         }
+        ui.setFrom(first);
+        ui.setTo(second);
         return new Pair<>(first, second);
     }
 
     @Override
-    public synchronized void  mouseClicked(MouseEvent e) {
+    public synchronized void mouseClicked(MouseEvent e) {
         JPanel p = (JPanel)e.getSource();
+        System.out.print("Mousse clicked");
 
         int selection = Integer.parseInt(p.getName());
         if(moveNumber%2 == 0){
@@ -230,32 +249,5 @@ public class SwingUI extends JFrame implements MouseListener, GameUI, InputManag
     @Override
     public void mouseExited(MouseEvent e) {
 
-    }
-
-    @Override
-    public int getFrom() {
-        while(firstSelection == -1){
-            try {
-                Thread.sleep(500);
-            }catch(InterruptedException e){
-
-            }
-        }
-        return firstSelection;
-    }
-
-    @Override
-    public int getTo() {
-        while(secondSelection == -1){
-            try {
-                Thread.sleep(500);
-            }catch(InterruptedException e){
-
-            }
-        }
-        int temp = secondSelection;
-        firstSelection = -1;
-        secondSelection = -1;
-        return temp;
     }
 }

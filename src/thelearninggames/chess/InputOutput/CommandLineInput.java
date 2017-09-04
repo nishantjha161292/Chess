@@ -1,8 +1,5 @@
-package thelearninggames.chess.player;
+package thelearninggames.chess.InputOutput;
 
-import thelearninggames.chess.core.Color;
-import thelearninggames.chess.core.GameState;
-import thelearninggames.chess.core.Move;
 import java.util.Scanner;
 
 public class CommandLineInput implements InputManager {

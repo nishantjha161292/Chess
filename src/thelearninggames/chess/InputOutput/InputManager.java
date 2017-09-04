@@ -1,4 +1,4 @@
-package thelearninggames.chess.player;
+package thelearninggames.chess.InputOutput;
 
 public interface InputManager {
 
