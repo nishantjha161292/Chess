@@ -77,7 +77,7 @@ public class GameBoardServices implements ChessBoard {
 	   			else{
 	   				secondSelection = selection;
 			        moveNumber++;
-			        inp.update();
+			        inp.update(this);
 			        moved = true;
 	   			}
 	   			

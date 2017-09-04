@@ -22,7 +22,6 @@ public class GameBoardViewController implements MouseListener{
 	    JPanel p = (JPanel)e.getSource();
 	    int selection = Integer.parseInt(p.getName());
 	    GameBoardServices.getObject().playMove(selection);
-	    
 	}
 	
 	public void enableMouseInteraction(JPanel p){
