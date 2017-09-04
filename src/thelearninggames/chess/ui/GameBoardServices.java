@@ -1,5 +1,9 @@
 package thelearninggames.chess.ui;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Pair;
@@ -16,6 +20,9 @@ public class GameBoardServices implements InputManager,ChessBoard {
 	private Thread t;
 	private Game game;
 	private Chess board;
+	private static Clip clip;
+   
+
 
 	private static GameBoardServices object;
 	
@@ -99,10 +106,28 @@ public class GameBoardServices implements InputManager,ChessBoard {
             System.out.print("Game Started");
             t = new Thread(game);
             t.start();
+            try{
+                clip = AudioSystem.getClip();
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("resource/203.wav"));
+                clip.open(inputStream);
+                playLoadClip();
+
+            }catch(Exception e){
+                System.out.print("Sound Exception");
+            }
         }
         else{
         	System.out.print("Game Running");
         }
+	}
+	
+	public void playLoadClip(){
+		clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+	
+	public void stopLoadClip(){
+		clip.stop();
 	}
 	
 	@Override

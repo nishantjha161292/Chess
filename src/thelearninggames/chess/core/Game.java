@@ -37,7 +37,7 @@ public class Game implements Runnable{
     public void run(){
     	ui.update(currentPlayer,state);
         while(status == Status.Running){
-
+        	
             Move m = currentPlayer.getMove(state);
             if(validateMove(m)){
             	state.add(m);
@@ -46,8 +46,10 @@ public class Game implements Runnable{
                     winner = currentPlayer;
                 }
             	currentPlayer = (currentPlayer == white)? black : white;
+            	
             	ui.update(currentPlayer,state);
                 draw();
+                
             }
             
            // Chess.newGame().repaint(state);

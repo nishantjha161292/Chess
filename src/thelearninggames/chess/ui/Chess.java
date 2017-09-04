@@ -1,5 +1,8 @@
 package thelearninggames.chess.ui;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import thelearninggames.chess.core.GameState;
@@ -18,7 +21,7 @@ public class Chess extends JFrame{
    
     protected JLabel currentPlayer = new JLabel("Current Player :      ");
     private static Chess object;
-    
+   
 	private Chess() {
 		super("Chess");
         this.setMinimumSize(new Dimension(550,550));
@@ -30,6 +33,7 @@ public class Chess extends JFrame{
         board.setLayout(new GridLayout(8,8,2,2));
         tiles = new JPanel[64];
         pieces = new JLabel[64];
+        
 
         boolean startWithWhite = true;
         for(int i = 0; i < 64; i++){
@@ -66,6 +70,7 @@ public class Chess extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameBoardServices.getObject().startGame();
+                
             }
         });
         menuBar.add(start);
@@ -73,6 +78,7 @@ public class Chess extends JFrame{
         this.add(menuBar,BorderLayout.PAGE_START);
         this.add(board,BorderLayout.CENTER);
         this.setVisible(true);
+
     }
 	
 	public void repaint(GameState state) {
@@ -88,10 +94,10 @@ public class Chess extends JFrame{
 	}
 
 	public static Chess newGame() {
-		if(object != null){
-			return object;
+		if(object == null){
+			object = new Chess();
 		}
-		object = new Chess();
+		
 		return object;
 	}
 	
