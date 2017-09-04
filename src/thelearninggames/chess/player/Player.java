@@ -7,6 +7,7 @@ import thelearninggames.chess.core.Move;
 public class Player{
 
     InputManager in;
+    OutputManager out;
     Color color;
 
     public Color getColor(){
@@ -14,11 +15,26 @@ public class Player{
     }
 
     public Move getMove(final GameState state){
-        return new Move(in.getFrom(),in.getTo());
+        int from = in.getFrom();
+        int to = in.getTo();
+        Move m = new Move(from, to);
+
+        if(out != null){
+            out.setFrom(from);
+            out.setTo(to);
+        }
+
+        return m;
     }
 
     public Player(InputManager i, Color c){
         in = i;
         color = c;
+    }
+
+    public Player(InputManager i, Color c, OutputManager o){
+        in = i;
+        color = c;
+        out = o;
     }
 }
