@@ -88,14 +88,38 @@ public class Game implements Runnable{
 
     private boolean isPathBlocked(int from, int to){
         if(from / 8 == to / 8){ // in same row
-            System.out.print("Same Row");
+            if(from < to) {
+                for (int i = from + 1; i < to && i < 63; i++) {
+                    if (state.at(i) != null)
+                        return true;
+                }
+            }
+            else{
+                for (int i = to + 1; i < from && i < 63; i++) {
+                    if (state.at(i) != null)
+                        return true;
+                }
+            }
         }
         else if(from % 8 == to % 8){ // in same column
-            System.out.print("Same Column");
+            if(from < to){
+                for(int i = from + 8; i < to && i <63 ; i++){
+                    if(state.at(i) != null)
+                        return true;
+                }
+            }
+            else{
+                for(int i = to + 8; i < from && i <63 ; i = i + 8){
+                    if(state.at(i) != null)
+                        return true;
+                }
+            }
+
         }
         else if (Math.abs(from /8 - to /8) == Math.abs(from % 8 - to % 8)){ // same diagonal
             System.out.print("Same Diagonal");
         }
+
         return false;
     }
 
