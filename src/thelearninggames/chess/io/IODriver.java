@@ -1,5 +1,8 @@
 package thelearninggames.chess.io;
 
+/**
+ * @author njha
+ */
 public class IODriver{
 	public InputManager inpMgr;
 	public OutputManager outMgr;

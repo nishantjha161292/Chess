@@ -46,7 +46,6 @@ public class Game implements Runnable{
                 }
             	currentPlayer = (currentPlayer == white)? black : white;
             }	
-           
         }
     }
 

@@ -2,7 +2,10 @@ package thelearninggames.chess.io;
 
 import thelearninggames.chess.ui.GameBoardViewController.SwingInputStream;
 
-public class UIInput implements IOManager  {
+/**
+ * @author njha
+ */
+public class GUIInputOutput implements IOManager  {
 	
     int from = 0;
     int to = 0;

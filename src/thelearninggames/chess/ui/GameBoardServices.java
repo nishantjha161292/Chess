@@ -13,7 +13,7 @@ import thelearninggames.chess.core.Color;
 import thelearninggames.chess.io.IODriver;
 import thelearninggames.chess.io.IODriver.InputType;
 import thelearninggames.chess.io.NetworkInputOutput;
-import thelearninggames.chess.io.UIInput;
+import thelearninggames.chess.io.GUIInputOutput;
 import thelearninggames.chess.core.Game;
 
 import thelearninggames.chess.core.GameState;
@@ -21,11 +21,14 @@ import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.player.Player;
 import thelearninggames.chess.player.PlayerFactory;
 
+/**
+ * @author njha
+ */
 public class GameBoardServices implements ChessBoard {
 
 	private static volatile int moveNumber = 0;
-	private  static volatile int firstSelection = -1;
-	private  static volatile int secondSelection = -1;
+	private static volatile int firstSelection = -1;
+	private static volatile int secondSelection = -1;
 	private static volatile int prevselection = -1;
 	private static volatile InputType inputType;
 	private static volatile boolean moved = false;
@@ -33,7 +36,7 @@ public class GameBoardServices implements ChessBoard {
 	private Thread t;
 	private Timer timer;
 	private Game game;
-	private Chess board;
+	private ChessGUI board;
 	private static Clip clip;   
 	
 	private IODriver ioManager1 = new IODriver();
@@ -110,17 +113,10 @@ public class GameBoardServices implements ChessBoard {
 	@Override
 	public void startGame(){
         if(t == null) {
-        	board = Chess.newGame();
-        	
-        	setIOManager();
-        	Player P1 = PlayerFactory.getPlayer(ioManager1, Color.WHITE);
-        	Player P2 = PlayerFactory.getPlayer(ioManager2, Color.BLACK);
-        	Pair<Player, Player> players  = new Pair<>(P1,P2);
-        	
-        	game = new Game(object, players);
-        	
+        	board = ChessGUI.newGame();
+        	game = new Game(object, getPlayers());
+ 
         	board.drawBoard();
-        	
             initMusic();
             timer = new Timer(100, repainter);
             timer.setRepeats(true);
@@ -137,19 +133,23 @@ public class GameBoardServices implements ChessBoard {
         }
 	}
 	
-    
-    
+	private ActionListener repainter = new ActionListener() {
+	    public void actionPerformed(ActionEvent evt) {
+	    	updateBoard(game.getCurrentPlayer(), game.getState());
+	    }
+	};
 
-private ActionListener repainter = new ActionListener() {
-    public void actionPerformed(ActionEvent evt) {
-    	board.repaint(game.getState());
-    }
-};
-
+	private Pair<Player, Player> getPlayers(){
+		setIOManager();
+    	Player P1 = PlayerFactory.getPlayer(ioManager1, Color.WHITE);
+    	Player P2 = PlayerFactory.getPlayer(ioManager2, Color.BLACK);
+    	Pair<Player, Player> players  = new Pair<>(P1,P2);
+    	return players;
+	}
 	
 	private void setIOManager(){
 		NetworkInputOutput n;
-		UIInput ui = new UIInput();
+		GUIInputOutput ui = new GUIInputOutput();
 		switch (inputType){
 			case UI:
 				ioManager1.inpMgr = ui;

@@ -4,6 +4,10 @@ import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Pair;
 import thelearninggames.chess.player.Player;
 
+/**
+ * @author njha
+ *
+ */
 public interface ChessBoard {
 
 	 void startGame();

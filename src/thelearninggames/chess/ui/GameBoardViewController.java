@@ -2,14 +2,17 @@ package thelearninggames.chess.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.JPanel;
-
 import thelearninggames.chess.core.Pair;
 
+/**
+ * @author njha
+ *
+ */
 public class GameBoardViewController implements MouseListener{
 	
 	public static class SwingInputStream{
+		
 		static Pair<Integer,Integer> move;
 		public static int readFirstInput(){
 			while(!GameBoardServices.getObject().moveDidHappen()){
@@ -22,10 +25,8 @@ public class GameBoardViewController implements MouseListener{
 			move = GameBoardServices.getObject().getLastMove();
 			
 			return move.fst;
-			
 		}
 		public static int readSecondInput(){
-			System.out.println("jhsdk");
 			return move.snd;
 		}
 	}

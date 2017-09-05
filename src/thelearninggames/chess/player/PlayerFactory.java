@@ -13,8 +13,6 @@ public class PlayerFactory {
     }
     
     public static Player getPlayer(IODriver ioManager, Color c){
-        
         return new Player(ioManager,c);
-        
     }
 }

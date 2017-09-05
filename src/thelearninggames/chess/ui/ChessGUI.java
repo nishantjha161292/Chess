@@ -12,7 +12,11 @@ import thelearninggames.chess.pieces.Piece;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Chess extends JFrame{
+/**
+ * @author njha
+ *
+ */
+public class ChessGUI extends JFrame{
 	
 	private Thread t;
     private Game game;
@@ -29,9 +33,9 @@ public class Chess extends JFrame{
    
    
     protected JLabel currentPlayer = new JLabel("Current Player :      ");
-    private static Chess object;
+    private static ChessGUI object;
    
-	private Chess() {
+	private ChessGUI() {
 		super("Chess");
         this.setMinimumSize(new Dimension(550,550));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,9 +82,9 @@ public class Chess extends JFrame{
 	    }
 	}
 
-	public static Chess newGame() {
+	public static ChessGUI newGame() {
 		if(object == null){
-			object = new Chess();
+			object = new ChessGUI();
 		}
 		
 		return object;
