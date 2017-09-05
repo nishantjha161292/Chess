@@ -36,7 +36,8 @@ public class GameBoardServices implements ChessBoard {
 	private Chess board;
 	private static Clip clip;   
 	
-	private IODriver ioManager;
+	private IODriver ioManager1 = new IODriver();
+	private IODriver ioManager2 = new IODriver();
 	 	
 	private static GameBoardServices object;
 	
@@ -58,8 +59,8 @@ public class GameBoardServices implements ChessBoard {
 	        firstSelection = -1;
 	        secondSelection = -1;
 	    }
-	    ioManager.outMgr.setFrom(first);
-	    ioManager.outMgr.setTo(second);
+	    game.getCurrentPlayer().getIOManager().outMgr.setFrom(first);
+	    game.getCurrentPlayer().getIOManager().outMgr.setTo(second);
 	    return new Pair<>(first, second);
 	}
 	
@@ -110,12 +111,15 @@ public class GameBoardServices implements ChessBoard {
 	public void startGame(){
         if(t == null) {
         	board = Chess.newGame();
-        	board.drawBoard();
+        	
         	setIOManager();
-        	Player P1 = PlayerFactory.getPlayer(ioManager, Color.WHITE);
-        	Player P2 = PlayerFactory.getPlayer(ioManager, Color.BLACK);
+        	Player P1 = PlayerFactory.getPlayer(ioManager1, Color.WHITE);
+        	Player P2 = PlayerFactory.getPlayer(ioManager2, Color.BLACK);
         	Pair<Player, Player> players  = new Pair<>(P1,P2);
+        	
         	game = new Game(object, players);
+        	
+        	board.drawBoard();
         	
             initMusic();
             timer = new Timer(100, repainter);
@@ -144,19 +148,28 @@ private ActionListener repainter = new ActionListener() {
 
 	
 	private void setIOManager(){
-		ioManager = new IODriver();
+		NetworkInputOutput n;
+		UIInput ui = new UIInput();
 		switch (inputType){
 			case UI:
-				ioManager.inpMgr = new UIInput();
-				ioManager.outMgr = new UIInput();
+				ioManager1.inpMgr = ui;
+				ioManager1.inpMgr = ui;
+				ioManager2.outMgr = ui;
+				ioManager2.outMgr = ui;
 				break;
 			case NETWORK_CLIENT:
-				ioManager.outMgr =new NetworkInputOutput(serverIP);
-				ioManager.inpMgr = new UIInput();
+				n = new NetworkInputOutput(serverIP);
+				ioManager1.outMgr = ui;
+				ioManager1.inpMgr = n;
+				ioManager2.inpMgr = ui;
+				ioManager2.outMgr = n;
 				break;
 			case NETWORK_SERVER:
-				ioManager.outMgr = new UIInput();
-				ioManager.inpMgr = new NetworkInputOutput();
+				n = new NetworkInputOutput();
+				ioManager1.outMgr = n;
+				ioManager1.inpMgr =  ui;
+				ioManager2.inpMgr =  n;
+				ioManager2.outMgr = ui;
 				break;
 			default:
 				break;

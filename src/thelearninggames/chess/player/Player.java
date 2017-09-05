@@ -28,5 +28,9 @@ public class Player{
         io= ioManager;
         color = c;
     }
+    
+    public IODriver getIOManager(){
+    	return io;
+    }
 
 }
