@@ -89,13 +89,13 @@ public class Game implements Runnable{
     private boolean isPathBlocked(int from, int to){
         if(from / 8 == to / 8){ // in same row
             if(from < to) {
-                for (int i = from + 1; i < to && i < 63; i++) {
+                for (int i = from + 1; i < to ; i++) {
                     if (state.at(i) != null)
                         return true;
                 }
             }
             else{
-                for (int i = to + 1; i < from && i < 63; i++) {
+                for (int i = to + 1; i < from ; i++) {
                     if (state.at(i) != null)
                         return true;
                 }
@@ -103,13 +103,13 @@ public class Game implements Runnable{
         }
         else if(from % 8 == to % 8){ // in same column
             if(from < to){
-                for(int i = from + 8; i < to && i <63 ; i = i + 8){
+                for(int i = from + 8; i < to ; i = i + 8){
                     if(state.at(i) != null)
                         return true;
                 }
             }
             else{
-                for(int i = to + 8; i < from && i <63 ; i = i + 8){
+                for(int i = to + 8; i < from ; i = i + 8){
                     if(state.at(i) != null)
                         return true;
                 }
@@ -117,9 +117,36 @@ public class Game implements Runnable{
 
         }
         else if (Math.abs(from /8 - to /8) == Math.abs(from % 8 - to % 8)){ // same diagonal
-            System.out.print("Same Diagonal");
-        }
+            if(from < to){
+                if(from % 8 < to % 8){
+                    for(int i = from + 8 + 1; i < to; i = i + 8 + 1){
+                        if(state.at(i) != null)
+                            return true;
+                    }
+                }
+                else{
+                    for(int i = from + 8 - 1; i < to; i = i + 8 - 1){
+                        if(state.at(i) != null)
+                            return true;
+                    }
+                }
+            }
+            else{
+                if(from % 8 < to % 8){
+                    for(int i = to + 8 - 1; i < from; i = i + 8 - 1){
+                        if(state.at(i) != null)
+                            return true;
+                    }
+                }
+                else{
+                    for(int i = to + 8 + 1; i < from; i = i + 8 + 1){
+                        if(state.at(i) != null)
+                            return true;
+                    }
+                }
 
+            }
+        }
         return false;
     }
 
