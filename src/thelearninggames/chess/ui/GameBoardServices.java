@@ -1,8 +1,12 @@
 package thelearninggames.chess.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.Timer;
 
 import thelearninggames.chess.core.Color;
 
@@ -27,6 +31,7 @@ public class GameBoardServices implements ChessBoard {
 	private static volatile boolean moved = false;
 	private static volatile String serverIP = null;
 	private Thread t;
+	private Timer timer;
 	private Game game;
 	private Chess board;
 	private static Clip clip;   
@@ -111,6 +116,10 @@ public class GameBoardServices implements ChessBoard {
         	game = new Game(object, players);
         	
             initMusic();
+            timer = new Timer(100, repainter);
+            timer.setRepeats(true);
+            timer.start();
+ 
              if(t == null) {
                  t = new Thread(game);
                  t.start();
@@ -121,6 +130,16 @@ public class GameBoardServices implements ChessBoard {
         	System.out.print("Game Running");
         }
 	}
+	
+    
+    
+
+private ActionListener repainter = new ActionListener() {
+    public void actionPerformed(ActionEvent evt) {
+    	board.repaint(game.getState());
+    }
+};
+
 	
 	private void setIOManager(){
 		switch (inputType){
