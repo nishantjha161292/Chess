@@ -103,7 +103,7 @@ public class Game implements Runnable{
         }
         else if(from % 8 == to % 8){ // in same column
             if(from < to){
-                for(int i = from + 8; i < to && i <63 ; i++){
+                for(int i = from + 8; i < to && i <63 ; i = i + 8){
                     if(state.at(i) != null)
                         return true;
                 }
