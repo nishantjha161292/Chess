@@ -147,10 +147,12 @@ private ActionListener repainter = new ActionListener() {
 				ioManager = new UIInput();
 				break;
 			case NETWORK_CLIENT:
-				ioManager = new NetworkInputOutput(serverIP);
+				IOManager.inpMgr =new NetworkInputOutput(serverIP);
+				IOManager.outMgr = new UIInput();
 				break;
 			case NETWORK_SERVER:
-				ioManager = new NetworkInputOutput();
+				IOManager.outMgr = new NetworkInputOutput();
+				IOManager.inpMgr = new UIInput();
 				break;
 			default:
 				break;

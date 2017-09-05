@@ -15,11 +15,11 @@ public class Player{
     }
 
     public Move getMove(final GameState state){
-        int from = io.getFrom();
-        int to = io.getTo();
+        int from = io.inpMgr.getFrom();
+        int to = io.inpMgr.getTo();
         Move m = new Move(from, to);
-        io.setFrom(from);
-        io.setTo(to);
+        io.outMgr.setFrom(from);
+        io.outMgr.setTo(to);
         return m;
     }
 

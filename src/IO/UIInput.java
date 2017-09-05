@@ -2,7 +2,7 @@ package IO;
 
 import thelearninggames.chess.ui.GameBoardViewController.SwingInputStream;
 
-public class UIInput implements IOManager {
+public class UIInput extends IOManager  {
 	
     int from = 0;
     int to = 0;
