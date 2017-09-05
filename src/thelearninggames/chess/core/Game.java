@@ -3,8 +3,6 @@ package thelearninggames.chess.core;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
-import thelearninggames.chess.ui.ChessBoard;
-
 
 public class Game implements Runnable{
 
@@ -15,15 +13,13 @@ public class Game implements Runnable{
     Player black;
     Player currentPlayer;
     Player winner;
-    ChessBoard ui;
-    
-    public Game(ChessBoard ui, Pair<Player,Player> pair){
+
+    public Game(Pair<Player,Player> pair){
         status = Status.Running;
         state = new GameState();
         white = pair.fst;
         black = pair.snd;
         currentPlayer = white;
-        this.ui = ui;
     }
 
     void draw(){
@@ -35,17 +31,19 @@ public class Game implements Runnable{
     }
 
     public void run(){
-    
-    	while(status == Status.Running){
+        while(status == Status.Running){
+
             Move m = currentPlayer.getMove(state);
-            if(validateMove(m)){
-            	state.add(m);
-            	if(state.isCheckMate()){
-                    status = Status.Over;
-                    winner = currentPlayer;
-                }
-            	currentPlayer = (currentPlayer == white)? black : white;
-            }	
+            if(validateMove(m))
+                state.add(m);
+            else
+                continue;
+            if(state.isCheckMate()){
+                status = Status.Over;
+                winner = currentPlayer;
+            }
+            currentPlayer = (currentPlayer == white)? black : white;
+            draw();
         }
     }
 
@@ -60,8 +58,6 @@ public class Game implements Runnable{
     private boolean validateMove(Move m){
         int from = m.getFrom();
         int to = m.getTo();
-        System.out.println("FROM: "+ from);
-        System.out.println("TO: "+to);
 
         Piece p = state.at(from);
         // Invalid move (move starting from empty state, moving other players piece, move to same destination)
@@ -89,16 +85,39 @@ public class Game implements Runnable{
 
     private boolean isPathBlocked(int from, int to){
         if(from / 8 == to / 8){ // in same row
-            System.out.print("Same Row");
+            if(from < to) {
+                for (int i = from + 1; i < to && i < 63; i++) {
+                    if (state.at(i) != null)
+                        return true;
+                }
+            }
+            else{
+                for (int i = to + 1; i < from && i < 63; i++) {
+                    if (state.at(i) != null)
+                        return true;
+                }
+            }
         }
         else if(from % 8 == to % 8){ // in same column
-            System.out.print("Same Column");
+            if(from < to){
+                for(int i = from + 8; i < to && i <63 ; i = i + 8){
+                    if(state.at(i) != null)
+                        return true;
+                }
+            }
+            else{
+                for(int i = to + 8; i < from && i <63 ; i = i + 8){
+                    if(state.at(i) != null)
+                        return true;
+                }
+            }
+
         }
         else if (Math.abs(from /8 - to /8) == Math.abs(from % 8 - to % 8)){ // same diagonal
             System.out.print("Same Diagonal");
         }
+
         return false;
     }
-    
-    
+
 }

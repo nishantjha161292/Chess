@@ -114,7 +114,7 @@ public class GameBoardServices implements ChessBoard {
 	public void startGame(){
         if(t == null) {
         	board = ChessGUI.newGame();
-        	game = new Game(object, getPlayers());
+        	game = new Game(getPlayers());
  
         	board.drawBoard();
             initMusic();
