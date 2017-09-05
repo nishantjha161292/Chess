@@ -1,4 +1,4 @@
-package thelearninggames.chess.InputOutput;
+package thelearninggames.chess.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class NetworkInputOutput implements InputManager,OutputManager {
+public class NetworkInputOutput implements IODrivers {
 
     static final int port = 24377;
 
@@ -14,6 +14,7 @@ public class NetworkInputOutput implements InputManager,OutputManager {
     Socket s;
     DataInputStream input;
     DataOutputStream output;
+    
 
     @Override
     public int getFrom() {

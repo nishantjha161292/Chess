@@ -3,9 +3,6 @@ package thelearninggames.chess.core;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
-import thelearninggames.chess.ui.GameUI;
-import thelearninggames.chess.ui.SwingUI;
-
 
 public class Game implements Runnable{
 

@@ -1,7 +1,5 @@
 package thelearninggames.chess.pieces;
 
-import com.sun.tools.internal.xjc.model.CNonElement;
-
 public class Direction {
 
     public final int UP;

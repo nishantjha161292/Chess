@@ -1,8 +1,8 @@
-package thelearninggames.chess.InputOutput;
+package thelearninggames.chess.io;
 
 import java.util.Scanner;
 
-public class CommandLineInput implements InputManager {
+public class CommandLineInput implements IODrivers{
 
     Scanner Cin ;
 
@@ -19,4 +19,18 @@ public class CommandLineInput implements InputManager {
     public int getTo() {
         return Cin.nextInt();
     }
+
+	@Override
+	public void setFrom(int a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTo(int a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }
