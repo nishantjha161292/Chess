@@ -1,11 +1,8 @@
-package thelearninggames.chess.player;
+package IO;
 
-import thelearninggames.chess.core.Color;
-import thelearninggames.chess.core.GameState;
-import thelearninggames.chess.core.Move;
 import java.util.Scanner;
 
-public class CommandLineInput implements InputManager {
+public class CommandLineInput implements IOManager {
 
     Scanner Cin ;
 
@@ -22,4 +19,18 @@ public class CommandLineInput implements InputManager {
     public int getTo() {
         return Cin.nextInt();
     }
+
+	@Override
+	public void setFrom(int a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTo(int a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

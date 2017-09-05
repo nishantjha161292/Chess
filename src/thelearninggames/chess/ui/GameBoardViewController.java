@@ -5,7 +5,30 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+import thelearninggames.chess.core.Pair;
+
 public class GameBoardViewController implements MouseListener{
+	
+	public static class SwingInputStream{
+		static Pair<Integer,Integer> move;
+		public static int readFirstInput(){
+			while(!GameBoardServices.getObject().moveDidHappen()){
+	    		try {
+	                Thread.sleep(500);
+	            }catch(InterruptedException e){
+
+	            }
+	    	}
+			move = GameBoardServices.getObject().getLastMove();
+			
+			return move.fst;
+			
+		}
+		public static int readSecondInput(){
+			System.out.println("jhsdk");
+			return move.snd;
+		}
+	}
 	
 	private static GameBoardViewController object;
 	

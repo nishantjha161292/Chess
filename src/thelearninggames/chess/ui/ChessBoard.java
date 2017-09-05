@@ -10,4 +10,5 @@ public interface ChessBoard {
 	 boolean moveDidHappen();
 	 Pair<Integer,Integer> getLastMove();
 	 void updateBoard(Player currentPlayer, GameState state);
+	void startGame(String ip);
 }
