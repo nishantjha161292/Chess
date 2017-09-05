@@ -1,4 +1,4 @@
-package IO;
+package thelearninggames.chess.io;
 
 import thelearninggames.chess.ui.GameBoardViewController.SwingInputStream;
 

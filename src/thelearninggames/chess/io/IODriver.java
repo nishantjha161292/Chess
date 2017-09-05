@@ -1,4 +1,4 @@
-package IO;
+package thelearninggames.chess.io;
 
 public class IODriver{
 	public InputManager inpMgr;

@@ -1,8 +1,6 @@
 package thelearninggames.chess.player;
 
-import IO.IODriver;
-import IO.InputManager;
-import IO.OutputManager;
+import thelearninggames.chess.io.IODriver;
 import thelearninggames.chess.core.Color;
 import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Move;

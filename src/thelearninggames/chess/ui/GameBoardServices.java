@@ -10,10 +10,10 @@ import javax.swing.Timer;
 
 import thelearninggames.chess.core.Color;
 
-import IO.IODriver;
-import IO.IODriver.InputType;
-import IO.NetworkInputOutput;
-import IO.UIInput;
+import thelearninggames.chess.io.IODriver;
+import thelearninggames.chess.io.IODriver.InputType;
+import thelearninggames.chess.io.NetworkInputOutput;
+import thelearninggames.chess.io.UIInput;
 import thelearninggames.chess.core.Game;
 
 import thelearninggames.chess.core.GameState;
