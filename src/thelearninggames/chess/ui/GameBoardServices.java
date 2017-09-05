@@ -10,8 +10,8 @@ import javax.swing.Timer;
 
 import thelearninggames.chess.core.Color;
 
-import IO.IOManager;
-import IO.IOManager.InputType;
+import IO.IODriver;
+import IO.IODriver.InputType;
 import IO.NetworkInputOutput;
 import IO.UIInput;
 import thelearninggames.chess.core.Game;
@@ -36,7 +36,7 @@ public class GameBoardServices implements ChessBoard {
 	private Chess board;
 	private static Clip clip;   
 	
-	private IOManager ioManager;
+	private IODriver ioManager;
 	 	
 	private static GameBoardServices object;
 	
@@ -58,6 +58,8 @@ public class GameBoardServices implements ChessBoard {
 	        firstSelection = -1;
 	        secondSelection = -1;
 	    }
+	    ioManager.outMgr.setFrom(first);
+	    ioManager.outMgr.setTo(second);
 	    return new Pair<>(first, second);
 	}
 	
@@ -142,17 +144,19 @@ private ActionListener repainter = new ActionListener() {
 
 	
 	private void setIOManager(){
+		ioManager = new IODriver();
 		switch (inputType){
 			case UI:
-				ioManager = new UIInput();
+				ioManager.inpMgr = new UIInput();
+				ioManager.outMgr = new UIInput();
 				break;
 			case NETWORK_CLIENT:
-				IOManager.inpMgr =new NetworkInputOutput(serverIP);
-				IOManager.outMgr = new UIInput();
+				ioManager.outMgr =new NetworkInputOutput(serverIP);
+				ioManager.inpMgr = new UIInput();
 				break;
 			case NETWORK_SERVER:
-				IOManager.outMgr = new NetworkInputOutput();
-				IOManager.inpMgr = new UIInput();
+				ioManager.outMgr = new UIInput();
+				ioManager.inpMgr = new NetworkInputOutput();
 				break;
 			default:
 				break;

@@ -2,7 +2,7 @@ package IO;
 
 import thelearninggames.chess.ui.GameBoardViewController.SwingInputStream;
 
-public class UIInput extends IOManager  {
+public class UIInput implements IOManager  {
 	
     int from = 0;
     int to = 0;
@@ -24,13 +24,13 @@ public class UIInput extends IOManager  {
 
 	@Override
 	public void setFrom(int a) {
-		// TODO Auto-generated method stub
+		from = a;
 		
 	}
 
 	@Override
 	public void setTo(int a) {
-		// TODO Auto-generated method stub
+		to = a;
 		
 	}
 

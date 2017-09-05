@@ -2,7 +2,7 @@ package IO;
 
 import java.util.Scanner;
 
-public class CommandLineInput extends IOManager {
+public class CommandLineInput implements IOManager{
 
     Scanner Cin ;
 
