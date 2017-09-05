@@ -2,7 +2,7 @@ package thelearninggames.chess.io;
 
 import java.util.Scanner;
 
-public class CommandLineInput implements IOManager{
+public class CommandLineInput implements IODrivers{
 
     Scanner Cin ;
 

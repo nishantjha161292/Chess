@@ -5,7 +5,7 @@ import thelearninggames.chess.ui.GameBoardViewController.SwingInputStream;
 /**
  * @author njha
  */
-public class GUIInputOutput implements IOManager  {
+public class GUIInputOutput implements IODrivers  {
 	
     int from = 0;
     int to = 0;

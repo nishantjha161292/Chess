@@ -1,13 +1,13 @@
 package thelearninggames.chess.player;
 
-import thelearninggames.chess.io.IODriver;
+import thelearninggames.chess.io.IOManager;
 import thelearninggames.chess.core.Color;
 import thelearninggames.chess.core.GameState;
 import thelearninggames.chess.core.Move;
 
 public class Player{
 
-    IODriver io;
+    IOManager io;
     Color color;
 
     public Color getColor(){
@@ -31,13 +31,13 @@ public class Player{
         return m;
     }
 
-    public Player(IODriver ioManager, Color c){
+    public Player(IOManager ioManager, Color c){
        
         io= ioManager;
         color = c;
     }
     
-    public IODriver getIOManager(){
+    public IOManager getIOManager(){
     	return io;
     }
 

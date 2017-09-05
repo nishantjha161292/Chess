@@ -10,8 +10,8 @@ import javax.swing.Timer;
 
 import thelearninggames.chess.core.Color;
 
-import thelearninggames.chess.io.IODriver;
-import thelearninggames.chess.io.IODriver.InputType;
+import thelearninggames.chess.io.IOManager;
+import thelearninggames.chess.io.IOManager.InputType;
 import thelearninggames.chess.io.NetworkInputOutput;
 import thelearninggames.chess.io.GUIInputOutput;
 import thelearninggames.chess.core.Game;
@@ -39,8 +39,8 @@ public class GameBoardServices implements ChessBoard {
 	private ChessGUI board;
 	private static Clip clip;   
 	
-	private IODriver ioManager1 = new IODriver();
-	private IODriver ioManager2 = new IODriver();
+	private IOManager ioManager1 = new IOManager();
+	private IOManager ioManager2 = new IOManager();
 	 	
 	private static GameBoardServices object;
 	

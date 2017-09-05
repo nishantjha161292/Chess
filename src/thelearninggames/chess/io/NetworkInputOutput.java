@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class NetworkInputOutput implements IOManager {
+public class NetworkInputOutput implements IODrivers {
 
     static final int port = 24377;
 

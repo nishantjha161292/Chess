@@ -3,7 +3,7 @@ package thelearninggames.chess.ui;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 
-import thelearninggames.chess.io.IODriver.InputType;
+import thelearninggames.chess.io.IOManager.InputType;
 
 import thelearninggames.chess.core.Game;
 import thelearninggames.chess.core.GameState;
