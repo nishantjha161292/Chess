@@ -153,8 +153,8 @@ public class GameBoardServices implements ChessBoard {
 		switch (inputType){
 			case UI:
 				ioManager1.inpMgr = ui;
-				ioManager1.inpMgr = ui;
-				ioManager2.outMgr = ui;
+				ioManager1.outMgr = ui;
+				ioManager2.inpMgr = ui;
 				ioManager2.outMgr = ui;
 				break;
 			case NETWORK_CLIENT:
