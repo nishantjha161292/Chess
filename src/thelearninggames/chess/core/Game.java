@@ -72,18 +72,21 @@ public class Game implements Runnable{
         //Invalid move killing king
         if(state.at(to) != null && state.at(to).getPieceType() == PieceType.King)
             return false;
-
-        if((p.getValidMoves(from / 8, from % 8, state.at(to) == null).stream().filter(a -> a == to).count() > 0)){
-
-            //Also check if any piece is jumping over another piece
-            if(p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen){
-                return !isPathBlocked(from,to);
-            }
-            else{
-                return true;
-            }
+        // Invalid piece movement
+        if(!(p.getValidMoves().stream().filter(a -> a == to).count() > 0))
+            return false;
+        //Also check if any piece is jumping over another piece
+        if((p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen) && isPathBlocked(from,to))
+            return false;
+        //Pawn only moves diagonal if there is  an enemy and forward only if location is empty
+        if(p.getPieceType() == PieceType.Pawn){
+            if(to % 8 != from % 8 && state.at(to) == null)
+                return false;
+            if(to % 8 == from % 8 && state.at(to) != null)
+                return false;
         }
-        return false;
+
+        return true;
     }
 
     private boolean isPathBlocked(int from, int to){
@@ -144,7 +147,6 @@ public class Game implements Runnable{
                             return true;
                     }
                 }
-
             }
         }
         return false;

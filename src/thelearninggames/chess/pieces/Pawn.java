@@ -26,24 +26,26 @@ public class Pawn implements Piece {
     }
 
     @Override
-    public ArrayList<Integer> getValidMoves(int row, int col, boolean isToEmpty) {
+    public ArrayList<Integer> getValidMoves() {
+        int row = pos / 8;
+        int col = pos % 8;
         ArrayList<Integer> moves = new ArrayList<>();
         Direction d = new Direction(row, col);
 
         //Move forward/backward when empty
-        if(this.getColor() == Color.WHITE && row < 7 && isToEmpty)
+        if(this.getColor() == Color.WHITE && row < 7 )
             moves.add( d.DOWN );
-        if(this.getColor() == Color.BLACK && row < 7 && isToEmpty)
+        if(this.getColor() == Color.BLACK && row < 7 )
             moves.add( d.UP );
         //Forward Diagonal for killing enemy
-        if(this.getColor() == Color.WHITE && row < 7 && col < 7 && !isToEmpty)
+        if(this.getColor() == Color.WHITE && row < 7 && col < 7 )
             moves.add( d.DOWNRIGHT );
-        if(this.getColor() == Color.WHITE && row < 7 && col > 0 && !isToEmpty)
+        if(this.getColor() == Color.WHITE && row < 7 && col > 0 )
             moves.add( d.DOWNLEFT );
         //Backward Diagonal for killing enemy
-        if(this.getColor() == Color.BLACK && row > 0 && col < 7 && !isToEmpty)
+        if(this.getColor() == Color.BLACK && row > 0 && col < 7 )
             moves.add( d.UPRIGHT );
-        if(this.getColor() == Color.BLACK && row > 0  && col > 0 && !isToEmpty)
+        if(this.getColor() == Color.BLACK && row > 0  && col > 0 )
             moves.add( d.UPLEFT );
         // move 2 steps from init location
         if(this.getColor() == Color.WHITE && row == 1)

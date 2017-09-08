@@ -26,8 +26,9 @@ public class Rook implements Piece {
     }
 
     @Override
-    public ArrayList<Integer> getValidMoves(int row, int col, boolean isToEmpty) {
-
+    public ArrayList<Integer> getValidMoves() {
+        int row = pos / 8;
+        int col = pos % 8;
         ArrayList<Integer> moves = new ArrayList<>();
         Direction d = new Direction(row, col);
         int temp = d.RIGHT;
