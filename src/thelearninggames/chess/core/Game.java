@@ -76,7 +76,7 @@ public class Game implements Runnable{
         if(!(p.getValidMoves().stream().filter(a -> a == to).count() > 0))
             return false;
         //Also check if any piece is jumping over another piece
-        if((p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen) && isPathBlocked(from,to))
+        if((p.getPieceType() == PieceType.Pawn || p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen) && isPathBlocked(from,to))
             return false;
         //Pawn only moves diagonal if there is  an enemy and forward only if location is empty
         if(p.getPieceType() == PieceType.Pawn){
