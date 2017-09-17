@@ -54,7 +54,7 @@ public class Direction {
         if(n < 1 || n > 8)
             return CENTER;
         int temp = (row - n) * 8 + col;
-        if(temp > 63 || temp % 8 != col)
+        if(temp <0  || temp % 8 != col)
             return CENTER;
         return temp;
     }
@@ -84,10 +84,10 @@ public class Direction {
     }
 
     int getDOWN( int n){
-        if(n < 1 || n > 7)
+        if(n < 1 || n > 8)
             return CENTER;
         int temp = (row + n) * 8 + col;
-        if(temp < 0 || temp % 8 != col)
+        if(temp > 63 || temp % 8 != col)
             return CENTER;
         return temp;
     }
