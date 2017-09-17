@@ -85,12 +85,14 @@ public class Game implements Runnable{
             if(to % 8 == from % 8 && state.at(to) != null)
                 return false;
         }
+        //does not cause self check
         if(causesSelfCheck(from, to, p, m))
             return false;
 
         return true;
     }
 
+    private boolean isPathBlocked(final int from, final int to){
         if(from / 8 == to / 8){ // in same row
             if(from < to) {
                 for (int i = from + 1; i < to ; i++) {
@@ -153,6 +155,9 @@ public class Game implements Runnable{
         return false;
     }
 
+    boolean causesSelfCheck(final int from, final int to, final Piece p, final Move m) {
+        if (p.getPieceType() != PieceType.King) {
+
             int kPos = (currentPlayer.getColor() == Color.WHITE) ?
                     state.getWhites().stream().filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos() :
                     state.getBlacks().stream().filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos();
@@ -160,6 +165,7 @@ public class Game implements Runnable{
             if (kPos / 8 == from / 8) { // Same Row
                 state.add(m);
                 if (from < kPos) {
+                    int i = kPos - 1;
                     while (state.at(i) == null && i / 8 == kPos / 8)
                         i++;
                     if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) ) {
