@@ -2,7 +2,6 @@ package thelearninggames.chess.core;
 
 import thelearninggames.chess.pieces.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 

@@ -52,6 +52,9 @@ public class Game implements Runnable{
             		continue;
             		
             	}
+            	else{
+            		state.isCheckState = false;
+            	}
             }
             	   
             else
@@ -96,8 +99,7 @@ public class Game implements Runnable{
         if(!(p.getValidMoves().stream().filter(a -> a == to).count() > 0))
             return false;
         //Also check if any piece is jumping over another piece
-       // if((p.getPieceType() == PieceType.Pawn || p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen) && isPathBlocked(from,to))
-         if(p.getPieceType() != PieceType.Knight && isPathBlocked(from,to))
+        if(p.getPieceType() != PieceType.Knight && isPathBlocked(from,to))
         	return false;
         //Pawn only moves diagonal if there is  an enemy and forward only if location is empty
         if(p.getPieceType() == PieceType.Pawn){
@@ -118,31 +120,21 @@ public class Game implements Runnable{
     	return false;
     }
     
-    private boolean isCheckState(){
-    	if(kingUnderAttack(currentPlayer.getColor())){
-    		return true;
-    	}
-    	return false;
-    }
-    
     private boolean kingUnderAttack(Color color){
-    	Boolean check = false;
+    	
 		for(PieceType pt : PieceType.values()){
 			if(isAttacking((currentPlayer == white)? black : white, state.getPieces(color)
 							.stream().filter(a -> a.getPieceType() == pt).findFirst().get(),
 							state.getPieces(color).stream().filter(a-> a.getPieceType() == PieceType.King)
 							.findFirst().get())){
-				if(check == false){
-					check = true;
-					break;
+					return true;
 				}
 			}
-			
-		}
-		return check;
+		return false;
     }
 
     private boolean isAttacking(Player p, Piece attacker, Piece victim){
+    	
     	int temp = victim.getPos();
     	victim.setPos(attacker.getPos());
     	attacker.setPos(temp);
