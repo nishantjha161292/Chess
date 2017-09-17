@@ -21,4 +21,8 @@ public class Move {
 
     private int to;
 
+    public Move getInverseMove(){
+        return new Move(to, from);
+    }
+
 }
