@@ -9,6 +9,7 @@ import java.util.Iterator;
 public class GameState {
 
     volatile Piece[] state;
+    boolean isCheckState;
     boolean isCheckMate;
     ArrayList<Piece> whites;
     ArrayList<Piece> blacks;
@@ -142,15 +143,16 @@ public class GameState {
     void validate(Move move){
 
     }
-
-    public ArrayList<Piece> getBlacks(){
-        return blacks;
+    
+    public ArrayList<Piece> getPieces(Color color){
+    	if(color == Color.BLACK){
+    		 return blacks;
+    	}
+    	else{
+    		return whites;
+    	}
+       
     }
-
-    public ArrayList<Piece> getWhites(){
-        return whites;
-    }
-
     void draw(){
         for(int i = 0 ;i < 8; i++){
             for(int j = 0; j < 8; j++){
