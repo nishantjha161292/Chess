@@ -1,10 +1,14 @@
 package thelearninggames.chess.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+
+import thelearninggames.chess.pieces.Pawn;
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
-import thelearninggames.chess.ui.GameUI;
-import thelearninggames.chess.ui.SwingUI;
 
 
 public class Game implements Runnable{
@@ -16,6 +20,7 @@ public class Game implements Runnable{
     Player black;
     Player currentPlayer;
     Player winner;
+    boolean ischeck = false;
 
     public Game(Pair<Player,Player> pair){
         status = Status.Running;
@@ -37,14 +42,30 @@ public class Game implements Runnable{
         while(status == Status.Running){
 
             Move m = currentPlayer.getMove(state);
-            if(validateMove(m))
-                state.add(m);
+            
+            if(validateMove(m,currentPlayer)){
+            	state.add(m);
+            	if(state.isCheckState && kingUnderAttack(currentPlayer.getColor())){
+            		System.out.println("you are on attack");
+            		Move m1 = new Move(m.getTo(), m.getFrom());
+            		state.add(m1);
+            		continue;
+            		
+            	}
+            	else{
+            		state.isCheckState = false;
+            	}
+            }
+            	   
             else
                 continue;
             if(state.isCheckMate()){
                 status = Status.Over;
                 winner = currentPlayer;
             }
+            if(isCheckMove(m)){
+            	state.isCheckState = true;
+        	}
             currentPlayer = (currentPlayer == white)? black : white;
             draw();
         }
@@ -58,26 +79,28 @@ public class Game implements Runnable{
         return state;
     }
 
-    private boolean validateMove(Move m){
+    private boolean validateMove(Move m, Player player){
         int from = m.getFrom();
         int to = m.getTo();
 
         Piece p = state.at(from);
         // Invalid move (move starting from empty state, moving other players piece, move to same destination)
-        if(p == null || p.getColor() != currentPlayer.getColor() || from == to)
+        if(p == null || p.getColor() != player.getColor() || from == to)
             return false;
         //Invalid move (friendly fire)
         if(state.at(to) != null && state.at(to).getColor() == state.at(from).getColor())
             return false;
         //Invalid move killing king
-        if(state.at(to) != null && state.at(to).getPieceType() == PieceType.King)
-            return false;
+//        if(state.at(to) != null && state.at(to).getPieceType() == PieceType.King){
+//        	ischeck = true;
+//            return false;
+//        }
         // Invalid piece movement
         if(!(p.getValidMoves().stream().filter(a -> a == to).count() > 0))
             return false;
         //Also check if any piece is jumping over another piece
-        if((p.getPieceType() == PieceType.Pawn || p.getPieceType() == PieceType.Bishop || p.getPieceType() == PieceType.Rook || p.getPieceType() == PieceType.Queen) && isPathBlocked(from,to))
-            return false;
+        if(p.getPieceType() != PieceType.Knight && isPathBlocked(from,to))
+        	return false;
         //Pawn only moves diagonal if there is  an enemy and forward only if location is empty
         if(p.getPieceType() == PieceType.Pawn){
             if(to % 8 != from % 8 && state.at(to) == null)
@@ -91,8 +114,53 @@ public class Game implements Runnable{
 
         return true;
     }
+    
+    private boolean isCheckMove(Move m){
+        if(isAttacking(currentPlayer, state.at(m.getTo()), state.getPieces(currentPlayer.getColor() == Color.BLACK? Color.WHITE: Color.BLACK)
+        		.stream().filter(a-> a.getPieceType() == PieceType.King).findFirst().get())){
+        	return true;
+        }
+    	return false;
+    }
+    
+    private boolean kingUnderAttack(Color color){
+    	
+		for(PieceType pt : PieceType.values()){
+			if(isAttacking((currentPlayer == white)? black : white, state.getPieces(color)
+							.stream().filter(a -> a.getPieceType() == pt).findFirst().get(),
+							state.getPieces(color).stream().filter(a-> a.getPieceType() == PieceType.King)
+							.findFirst().get())){
+					return true;
+				}
+			}
+		return false;
+    }
 
+    private boolean isAttacking(Player p, Piece attacker, Piece victim){
+    	
+    	int temp = victim.getPos();
+    	victim.setPos(attacker.getPos());
+    	attacker.setPos(temp);
+    	
+		ArrayList<Integer> validMove = attacker.getValidMoves();
+		
+		temp = victim.getPos();
+    	victim.setPos(attacker.getPos());
+    	attacker.setPos(temp);
+    	
+		int i=0;
+		while(i < validMove.size()){
+			if(state.at(validMove.get(i)) != null && state.at(validMove.get(i)).getPieceType() ==attacker.getPieceType() &&
+				validateMove(new Move(validMove.get(i), victim.getPos()), p)){
+				return true;
+			}
+			i++;
+		}
+		return false;
+    }
+    
     private boolean isPathBlocked(final int from, final int to){
+
         if(from / 8 == to / 8){ // in same row
             if(from < to) {
                 for (int i = from + 1; i < to ; i++) {
@@ -157,11 +225,10 @@ public class Game implements Runnable{
 
     boolean causesSelfCheck(final int from, final int to, final Piece p, final Move m) {
         if (p.getPieceType() != PieceType.King) {
-
-            int kPos = (currentPlayer.getColor() == Color.WHITE) ?
-                    state.getWhites().stream().filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos() :
-                    state.getBlacks().stream().filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos();
-
+            
+        	int kPos = state.getPieces(currentPlayer.getColor()).stream()
+        				.filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos();
+                  
             if (kPos / 8 == from / 8) { // Same Row
                 state.add(m);
                 if (from < kPos) {

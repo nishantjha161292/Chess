@@ -1,7 +1,5 @@
 package thelearninggames.chess.pieces;
 
-import com.sun.tools.internal.xjc.model.CNonElement;
-
 public class Direction {
 
     public final int UP;
@@ -56,7 +54,7 @@ public class Direction {
         if(n < 1 || n > 8)
             return CENTER;
         int temp = (row - n) * 8 + col;
-        if(temp > 63 || temp % 8 != col)
+        if(temp <0  || temp % 8 != col)
             return CENTER;
         return temp;
     }
@@ -89,7 +87,7 @@ public class Direction {
         if(n < 1 || n > 8)
             return CENTER;
         int temp = (row + n) * 8 + col;
-        if(temp < 0 || temp % 8 != col)
+        if(temp > 63 || temp % 8 != col)
             return CENTER;
         return temp;
     }
