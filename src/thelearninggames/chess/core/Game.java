@@ -233,7 +233,7 @@ public class Game implements Runnable{
                 state.add(m);
                 if (from < kPos) {
                     int i = kPos - 1;
-                    while (state.at(i) == null && i / 8 == kPos / 8)
+                    while (i >=0 && i <64 && state.at(i) == null && i / 8 == kPos / 8)
                         i++;
                     if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) ) {
                         state.undo();
@@ -241,7 +241,7 @@ public class Game implements Runnable{
                     }
                 } else {
                     int i = kPos + 1;
-                    while (state.at(i) == null && i / 8 == kPos / 8)
+                    while (i >=0 && i <64 && state.at(i) == null && i / 8 == kPos / 8)
                         i++;
                     if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
                         state.undo();
@@ -253,7 +253,7 @@ public class Game implements Runnable{
                 state.add(m);
                 if (from < kPos) {
                     int i = kPos - 8;
-                    while (state.at(i) == null && i % 8 == kPos % 8)
+                    while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
                         i -= 8;
                     if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
                         state.undo();
@@ -261,7 +261,7 @@ public class Game implements Runnable{
                     }
                 } else {
                     int i = kPos + 8;
-                    while (state.at(i) == null && i % 8 == kPos % 8)
+                    while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
                         i += 8;
                     if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
                         state.undo();
@@ -274,7 +274,7 @@ public class Game implements Runnable{
                 if (from < kPos) {
                     if (from % 8 < kPos % 8) {
                         int i = kPos - 8 - 1;
-                        while (state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
                             i = i - 8 - 1;
                         }
                         if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)){
@@ -283,7 +283,7 @@ public class Game implements Runnable{
                         }
                     } else {
                         int i = kPos - 8 + 1;
-                        while (state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
                             i = i - 8 + 1;
                         }
                         if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
@@ -294,7 +294,7 @@ public class Game implements Runnable{
                 } else {
                     if (from % 8 < kPos % 8) {
                         int i = kPos + 8 - 1;
-                        while (state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
                             i = i + 8 - 1;
                         }
                         if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
@@ -303,7 +303,7 @@ public class Game implements Runnable{
                         }
                     } else {
                         int i = kPos + 8 + 1;
-                        while (state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
                             i = i + 8 + 1;
                         }
                         if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
