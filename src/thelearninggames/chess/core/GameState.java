@@ -4,6 +4,8 @@ import thelearninggames.chess.pieces.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class GameState {
 
@@ -12,6 +14,8 @@ public class GameState {
     boolean isCheckMate;
     ArrayList<Piece> whites;
     ArrayList<Piece> blacks;
+    Deque<Move> progress;
+    Deque<Piece> killed;
 
     public final Piece[] getState() {
         return state;
@@ -26,6 +30,8 @@ public class GameState {
         state = new Piece[64];
         whites = new ArrayList<>();
         blacks = new ArrayList<>();
+        progress = new ArrayDeque<>();
+        killed = new ArrayDeque<>();
         ArrayList<Piece> pieces = PieceFactory.getInitialPieces();
         int whitePawnItr = 8;
         int blackPawnItr = 48;
@@ -135,8 +141,18 @@ public class GameState {
         // JLT implementation work need to be done here
         Piece temp = state[move.getFrom()];
         state[move.getFrom()] = null;
+        if(state[move.getTo()] != null)
+            killed.add(state[move.getTo()]);
         state[move.getTo()] = temp;
         temp.setPos(move.getTo());
+        progress.add(move);
+    }
+
+    void undo(){
+        Move undo = progress.getLast();
+        add(undo.getInverseMove());
+        if(killed.size() > 0 && killed.getLast().getPos() == undo.getTo())
+            state[undo.getTo()] = killed.getLast();
     }
 
     void validate(Move move){
@@ -150,7 +166,6 @@ public class GameState {
     	else{
     		return whites;
     	}
-       
     }
     void draw(){
         for(int i = 0 ;i < 8; i++){
