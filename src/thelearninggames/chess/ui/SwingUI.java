@@ -41,9 +41,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     OutputManager oplayer1 = ui;
     OutputManager oplayer2 = ui;
     boolean startWithWhite = true;
-    SwingUI that = this;
     Piece[] state;
-    Timer timer;
 
     public SwingUI() {
         super("Chess");
@@ -78,21 +76,13 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
         });
         this.setVisible(true);
         initMusic();
-        timer = new Timer(100, repainter);
-        timer.setRepeats(true);
-        timer.start();
     }
-
-    private ActionListener repainter = new ActionListener() {
-        public void actionPerformed(ActionEvent evt) {
-            repaint();
-        }
-    };
 
     void startgame(){
         Thread.currentThread().setPriority(8);
         if(t == null) {
             game = new Game(PlayerFactory.getPlayers(iplayer1,oplayer1,iplayer2,oplayer2));
+            game.register(this);
             drawBoard();
             initMusic();
             t = new Thread(game);
@@ -248,5 +238,10 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void update() {
+        repaint();
     }
 }
