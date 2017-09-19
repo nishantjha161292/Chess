@@ -1,12 +1,30 @@
 package thelearninggames.chess.core;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
 import thelearninggames.chess.player.Player;
 
 
-public class Game implements Runnable{
+public class Game implements Runnable, GameObservable{
+
+    @Override
+    public void register(GameObserver o) {
+        observerList.add(o);
+    }
+
+    @Override
+    public void unregister(GameObserver o) {
+        observerList.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for(GameObserver o : observerList)
+            o.update();
+    }
 
     public enum Status { Running, Over};
     Status status;
@@ -16,8 +34,10 @@ public class Game implements Runnable{
     Player currentPlayer;
     Player winner;
     boolean ischeck = false;
+    List<GameObserver> observerList;
 
     public Game(Pair<Player,Player> pair){
+        observerList = new ArrayList<>();
         status = Status.Running;
         state = new GameState();
         white = pair.fst;
@@ -35,7 +55,7 @@ public class Game implements Runnable{
 
     public void run(){
         while(status == Status.Running){
-
+            notifyObservers();
             Move m = currentPlayer.getMove(state);
             
             if(validateMove(m,currentPlayer)){
