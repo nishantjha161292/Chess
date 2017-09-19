@@ -41,11 +41,8 @@ public class Game implements Runnable{
             if(validateMove(m,currentPlayer)){
             	state.add(m);
             	if(state.isCheckState && kingUnderAttack(currentPlayer.getColor())){
-            		System.out.println("you are on attack");
-            		Move m1 = new Move(m.getTo(), m.getFrom());
-            		state.add(m1);
+            		state.add(m.getInverseMove());
             		continue;
-
             	}
             	else{
             		state.isCheckState = false;
