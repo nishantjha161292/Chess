@@ -40,7 +40,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     InputManager iplayer2 = ui;
     OutputManager oplayer1 = ui;
     OutputManager oplayer2 = ui;
-    boolean startWithWhite = true;
+    boolean startWithWhite = false;
     Piece[] state;
 
     public SwingUI() {
