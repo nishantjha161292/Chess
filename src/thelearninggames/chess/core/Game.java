@@ -2,6 +2,7 @@ package thelearninggames.chess.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import thelearninggames.chess.pieces.Piece;
 import thelearninggames.chess.pieces.PieceType;
@@ -235,99 +236,121 @@ public class Game implements Runnable, GameObservable{
         return false;
     }
 
-    boolean causesSelfCheck(final int from, final int to, final Piece p, final Move m) {
-        if (p.getPieceType() != PieceType.King) {
-            
+    boolean causesSelfCheck(final int from, final int to, final Piece p, final Move m) {// Check if moving current player piece from 'from' causes self check.
+        if (p.getPieceType() != PieceType.King) { // If piece is not king then check only the direction from where current player's  piece has moved.
         	int kPos = state.getPieces(currentPlayer.getColor()).stream()
         				.filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos();
-                  
-            if (kPos / 8 == from / 8) { // Same Row
-                state.add(m);
-                if (from < kPos) {
-                    int i = kPos - 1;
-                    while (i >=0 && i <64 && state.at(i) == null && i / 8 == kPos / 8)
-                        i++;
-                    if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) ) {
-                        state.undo();
-                        return true;
-                    }
-                } else {
-                    int i = kPos + 1;
-                    while (i >=0 && i <64 && state.at(i) == null && i / 8 == kPos / 8)
-                        i++;
-                    if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
-                        state.undo();
-                        return true;
-                    }
+        	return checkEnemyCanAttack(kPos,from,m);
+        }
+        else{ // If piece is King then check all suspects individually
+            Stream<Piece> suspects  = state.getPieces(currentPlayer.getColor() == Color.BLACK? Color.WHITE : Color.BLACK).stream().filter(piece -> { //get all enemy pieces that can attack at location 'to'
+                if(piece.getValidMoves().stream().filter(i -> i == to).count() > 0)
+                    return true;
+                return false;
+            });
+
+            Stream canAttack = suspects.filter(piece -> {
+                if(piece.getPieceType() == PieceType.Pawn){ // if it is pawn then it is surely correct as pawn kills only adjacent pieces.
+                    return true;
                 }
-                state.undo();
-            } else if (kPos % 8 == from % 8) { // Same Column
-                state.add(m);
-                if (from < kPos) {
-                    int i = kPos - 8;
-                    while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
-                        i -= 8;
-                    if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
-                        state.undo();
-                        return true;
-                    }
-                } else {
-                    int i = kPos + 8;
-                    while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
-                        i += 8;
-                    if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
-                        state.undo();
-                        return true;
-                    }
+                if(checkEnemyCanAttack(to, piece.getPos(), m)){ // run same check for other piece types
+                    return true;
                 }
-                state.undo();
-            } else if (Math.abs(from / 8 - kPos / 8) == Math.abs(from % 8 - kPos % 8)) { // same diagonal
-                state.add(m);
-                if (from < kPos) {
-                    if (from % 8 < kPos % 8) {
-                        int i = kPos - 8 - 1;
-                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
-                            i = i - 8 - 1;
-                        }
-                        if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)){
-                            state.undo();
-                            return true;
-                        }
-                    } else {
-                        int i = kPos - 8 + 1;
-                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
-                            i = i - 8 + 1;
-                        }
-                        if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
-                            state.undo();
-                            return true;
-                        }
-                    }
-                } else {
-                    if (from % 8 < kPos % 8) {
-                        int i = kPos + 8 - 1;
-                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
-                            i = i + 8 - 1;
-                        }
-                        if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
-                            state.undo();
-                            return true;
-                        }
-                    } else {
-                        int i = kPos + 8 + 1;
-                        while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
-                            i = i + 8 + 1;
-                        }
-                        if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
-                            state.undo();
-                            return true;
-                        }
-                    }
-                }
-                state.undo();
+                return false;
+            });
+            if(canAttack.count() > 0){
+                return true;
             }
         }
         return false;
     }
 
+    boolean checkEnemyCanAttack(int kPos, int from, Move m){ // Check if moving current player piece from 'from' causes self check By searching enemy in the direction of the piece moved.. Not for pawn only for long range enemies
+        if (kPos / 8 == from / 8) { // Same Row
+            state.add(m);
+            if (from < kPos) {
+                int i = kPos - 1;
+                while (i >=0 && i <64 && state.at(i) == null && i / 8 == kPos / 8)
+                    i++;
+                if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) ) {
+                    state.undo();
+                    return true;
+                }
+            } else {
+                int i = kPos + 1;
+                while (i >=0 && i <64 && state.at(i) == null && i / 8 == kPos / 8)
+                    i++;
+                if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
+                    state.undo();
+                    return true;
+                }
+            }
+            state.undo();
+        } else if (kPos % 8 == from % 8) { // Same Column
+            state.add(m);
+            if (from < kPos) {
+                int i = kPos - 8;
+                while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
+                    i -= 8;
+                if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
+                    state.undo();
+                    return true;
+                }
+            } else {
+                int i = kPos + 8;
+                while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
+                    i += 8;
+                if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
+                    state.undo();
+                    return true;
+                }
+            }
+            state.undo();
+        } else if (Math.abs(from / 8 - kPos / 8) == Math.abs(from % 8 - kPos % 8)) { // same diagonal
+            state.add(m);
+            if (from < kPos) {
+                if (from % 8 < kPos % 8) {
+                    int i = kPos - 8 - 1;
+                    while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        i = i - 8 - 1;
+                    }
+                    if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)){
+                        state.undo();
+                        return true;
+                    }
+                } else {
+                    int i = kPos - 8 + 1;
+                    while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        i = i - 8 + 1;
+                    }
+                    if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
+                        state.undo();
+                        return true;
+                    }
+                }
+            } else {
+                if (from % 8 < kPos % 8) {
+                    int i = kPos + 8 - 1;
+                    while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        i = i + 8 - 1;
+                    }
+                    if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
+                        state.undo();
+                        return true;
+                    }
+                } else {
+                    int i = kPos + 8 + 1;
+                    while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
+                        i = i + 8 + 1;
+                    }
+                    if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)) {
+                        state.undo();
+                        return true;
+                    }
+                }
+            }
+            state.undo();
+        }
+        return false;
+    }
 }
