@@ -21,9 +21,27 @@ public class Game implements Runnable, GameObservable{
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyUpdate() {
         for(GameObserver o : observerList)
             o.update();
+    }
+
+    @Override
+    public void notifyWhitePlayerUnderCheck(){
+        for(GameObserver o : observerList)
+            o.whitePlayerUnderCheck();
+    }
+
+    @Override
+    public void notifyBlackPlayerUnderCheck(){
+        for(GameObserver o : observerList)
+            o.blackPlayerUnderCheck();
+    }
+
+    @Override
+    public void notifyGameOver(){
+        for(GameObserver o : observerList)
+            o.gameOver();
     }
 
     public enum Status { Running, Over};
@@ -55,7 +73,7 @@ public class Game implements Runnable, GameObservable{
 
     public void run(){
         while(status == Status.Running){
-            notifyObservers();
+            notifyUpdate();
             Move m = currentPlayer.getMove(state);
             
             if(validateMove(m,currentPlayer)){
@@ -68,7 +86,6 @@ public class Game implements Runnable, GameObservable{
             		state.isCheckState = false;
             	}
             }
-
             else
                 continue;
             if(state.isCheckMate()){
@@ -83,7 +100,7 @@ public class Game implements Runnable, GameObservable{
         }
     }
 
-    Player getWinner(){
+    public Player getWinner(){
         return winner;
     }
 
@@ -120,8 +137,8 @@ public class Game implements Runnable, GameObservable{
             if(to % 8 == from % 8 && state.at(to) != null)
                 return false;
         }
-        //does not cause self check
-        if(causesSelfCheck(from, to, p, m))
+        //does not cause self check by moving from current position
+        if(causesSelfCheck(from, p, m))
             return false;
 
         return true;
@@ -235,7 +252,7 @@ public class Game implements Runnable, GameObservable{
         return false;
     }
 
-    boolean causesSelfCheck(final int from, final int to, final Piece p, final Move m) {
+    boolean causesSelfCheck(final int from, final Piece p, final Move m) {
         if (p.getPieceType() != PieceType.King) {
             
         	int kPos = state.getPieces(currentPlayer.getColor()).stream()

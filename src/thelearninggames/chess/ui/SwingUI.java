@@ -244,4 +244,19 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     public void update() {
         repaint();
     }
+
+    @Override
+    public void whitePlayerUnderCheck() {
+
+    }
+
+    @Override
+    public void blackPlayerUnderCheck() {
+
+    }
+
+    @Override
+    public void gameOver(){
+        JOptionPane.showMessageDialog(this, "Game Over. Winner is : " + game.getWinner().toString());
+    }
 }
