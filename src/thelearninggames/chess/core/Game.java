@@ -88,13 +88,26 @@ public class Game implements Runnable, GameObservable{
             }
             else
                 continue;
-            if(state.isCheckMate()){
-                status = Status.Over;
-                winner = currentPlayer;
-            }
             if(isCheckMove(m)){
             	state.isCheckState = true;
+            	if(currentPlayer.getColor() == Color.BLACK){
+            	    notifyWhitePlayerUnderCheck();
+                }
+                else{
+            	    notifyBlackPlayerUnderCheck();
+                }
         	}
+            if(isMate()){
+                if(state.isCheckState) {
+                    status = Status.Over;
+                    winner = currentPlayer;
+                }
+                else{
+                    status = Status.Over;
+                    winner = null;
+                }
+                notifyGameOver();
+            }
             currentPlayer = (currentPlayer == white)? black : white;
             draw();
         }
@@ -347,4 +360,16 @@ public class Game implements Runnable, GameObservable{
         return false;
     }
 
+    private boolean isMate(){
+        if(state.getPieces(currentPlayer.getColor() == Color.BLACK? Color.WHITE: Color.BLACK).stream().filter(piece -> {
+            ArrayList<Integer> moves = piece.getValidMoves();
+            for(int m : moves){
+                if(validateMove(new Move(piece.getPos(), m),currentPlayer.getColor() == Color.BLACK? white: black ))
+                    return true;
+            }
+            return false;
+        }).count() > 0)
+            return false;
+        return true;
+    }
 }
