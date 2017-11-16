@@ -161,50 +161,6 @@ public class Game implements Runnable, GameObservable{
         return true;
     }
     
-    private boolean isCheckMove(Move m){
-        if(isAttacking(currentPlayer, state.at(m.getTo()), state.getPieces(currentPlayer.getColor() == Color.BLACK? Color.WHITE: Color.BLACK)
-        		.stream().filter(a-> a.getPieceType() == PieceType.King).findFirst().get())){
-        	return true;
-        }
-    	return false;
-    }
-    
-    private boolean kingUnderAttack(Color color){
-    	
-		for(PieceType pt : PieceType.values()){
-			if(isAttacking((currentPlayer == white)? black : white, state.getPieces(color)
-							.stream().filter(a -> a.getPieceType() == pt).findFirst().get(),
-							state.getPieces(color).stream().filter(a-> a.getPieceType() == PieceType.King)
-							.findFirst().get())){
-					return true;
-				}
-			}
-		return false;
-    }
-
-    private boolean isAttacking(Player p, Piece attacker, Piece victim){
-    	
-    	int temp = victim.getPos();
-    	victim.setPos(attacker.getPos());
-    	attacker.setPos(temp);
-    	
-		ArrayList<Integer> validMove = attacker.getValidMoves();
-		
-		temp = victim.getPos();
-    	victim.setPos(attacker.getPos());
-    	attacker.setPos(temp);
-    	
-		int i=0;
-		while(i < validMove.size()){
-			if(state.at(validMove.get(i)) != null && state.at(validMove.get(i)).getPieceType() ==attacker.getPieceType() &&
-				validateMove(new Move(validMove.get(i), victim.getPos()), p)){
-				return true;
-			}
-			i++;
-		}
-		return false;
-    }
-    
     private boolean isPathBlocked(final int from, final int to){
 
         if(from / 8 == to / 8){ // in same row
