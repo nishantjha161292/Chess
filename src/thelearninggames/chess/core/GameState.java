@@ -11,7 +11,6 @@ public class GameState {
 
     volatile Piece[] state;
     boolean isCheckState;
-    boolean isCheckMate;
     ArrayList<Piece> whites;
     ArrayList<Piece> blacks;
     Deque<Move> progress;
@@ -19,10 +18,6 @@ public class GameState {
 
     public final Piece[] getState() {
         return state;
-    }
-
-    public boolean isCheckMate() {
-        return isCheckMate;
     }
 
     public GameState(){

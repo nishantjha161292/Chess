@@ -244,4 +244,43 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     public void update() {
         repaint();
     }
+
+    @Override
+    public void whitePlayerUnderCheck() {
+        System.out.print("White Player Under Check");
+        alert();
+    }
+
+    @Override
+    public void blackPlayerUnderCheck() {
+        System.out.print("Black Player Under Check");
+        alert();
+    }
+
+    @Override
+    public void gameOver(){
+        JOptionPane.showMessageDialog(this, "Game Over. Winner is : " + ((game.getWinner() == null) ? "DRAW" : game.getWinner().toString()));
+    }
+
+    private void alert(){
+        Point currLocation;
+        int iDisplaceXBy = 5;
+        JFrame frame = this;
+        currLocation = frame.getLocationOnScreen();
+        SwingUtilities.invokeLater (() -> {
+            Point position1 = new Point( currLocation.x + iDisplaceXBy , currLocation.y  );
+            Point position2 = new Point( currLocation.x - iDisplaceXBy , currLocation.y  );
+            for (int i = 0; i < 20 ; i++)
+            {
+                frame.setLocation(position1);
+                frame.setLocation(position2);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            frame.setLocation(currLocation);
+        });
+    }
 }
