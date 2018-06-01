@@ -18,7 +18,7 @@ import java.awt.event.*;
 
 public class SwingUI extends JFrame implements MouseListener, GameUI {
 
-    private Thread t;
+    private Thread game_thread;
     private Game game;
     private JPanel board;
     private JPanel[] tiles;
@@ -31,6 +31,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     private static volatile int moveNumber = 0;
     public  static volatile int firstSelection = -1;
     public  static volatile int secondSelection = -1;
+    private final String MUSIC_FILE = "resource/203.wav";
     private int prevselection = -1;
     private JLabel currentPlayer = new JLabel("Current Player :      ");
     Clip clip;
@@ -80,14 +81,14 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
 
     void startgame(){
         Thread.currentThread().setPriority(8);
-        if(t == null) {
+        if(game_thread == null) {
             game = new Game(PlayerFactory.getPlayers(iplayer1,oplayer1,iplayer2,oplayer2));
             game.register(this);
             drawBoard();
             initMusic();
-            t = new Thread(game);
-            t.setPriority(4);
-            t.start();
+            game_thread = new Thread(game);
+            game_thread.setPriority(4);
+            game_thread.start();
             runMusic();
         }
     }
@@ -147,7 +148,7 @@ public class SwingUI extends JFrame implements MouseListener, GameUI {
     void initMusic(){
         try{
             clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("resource/203.wav"));
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource(MUSIC_FILE));
             clip.open(inputStream);
 
         }catch(Exception e){
