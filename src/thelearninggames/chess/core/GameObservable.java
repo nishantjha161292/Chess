@@ -4,5 +4,8 @@ public interface GameObservable {
 
     void register(GameObserver o);
     void unregister(GameObserver o);
-    void notifyObservers();
+    void notifyUpdate();
+    void notifyWhitePlayerUnderCheck();
+    void notifyBlackPlayerUnderCheck();
+    void notifyGameOver();
 }

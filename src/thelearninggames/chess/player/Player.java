@@ -45,4 +45,9 @@ public class Player{
         color = c;
         out = o;
     }
+
+    @Override
+    public String toString(){
+        return color.toString();
+    }
 }

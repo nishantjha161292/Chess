@@ -22,9 +22,27 @@ public class Game implements Runnable, GameObservable{
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyUpdate() {
         for(GameObserver o : observerList)
             o.update();
+    }
+
+    @Override
+    public void notifyWhitePlayerUnderCheck(){
+        for(GameObserver o : observerList)
+            o.whitePlayerUnderCheck();
+    }
+
+    @Override
+    public void notifyBlackPlayerUnderCheck(){
+        for(GameObserver o : observerList)
+            o.blackPlayerUnderCheck();
+    }
+
+    @Override
+    public void notifyGameOver(){
+        for(GameObserver o : observerList)
+            o.gameOver();
     }
 
     public enum Status { Running, Over};
@@ -34,7 +52,6 @@ public class Game implements Runnable, GameObservable{
     Player black;
     Player currentPlayer;
     Player winner;
-    boolean ischeck = false;
     List<GameObserver> observerList;
 
     public Game(Pair<Player,Player> pair){
@@ -54,37 +71,42 @@ public class Game implements Runnable, GameObservable{
         return currentPlayer;
     }
 
-    public void run(){
-        while(status == Status.Running){
-            notifyObservers();
+    public void run() {
+        while (status == Status.Running) {
+            if (isMate()) {
+                if (state.isCheckState) {
+                    status = Status.Over;
+                    winner = (currentPlayer.getColor() == Color.BLACK)? white : black;
+                } else {
+                    status = Status.Over;
+                    winner = null;
+                }
+                notifyGameOver();
+                break;
+            }
+            notifyUpdate();
             Move m = currentPlayer.getMove(state);
-            
-            if(validateMove(m,currentPlayer)){
-            	state.add(m);
-            	if(state.isCheckState && kingUnderAttack(currentPlayer.getColor())){
-            		state.add(m.getInverseMove());
-            		continue;
-            	}
-            	else{
-            		state.isCheckState = false;
-            	}
-            }
 
-            else
+            if (validateMove(m, currentPlayer)) {
+
+                if (causesCheck(m)) {
+                    state.isCheckState = true;
+                    if (currentPlayer.getColor() == Color.BLACK)
+                        notifyWhitePlayerUnderCheck();
+                    else
+                        notifyBlackPlayerUnderCheck();
+                } else {
+                    state.isCheckState = false;
+                }
+                state.add(m);
+            } else
                 continue;
-            if(state.isCheckMate()){
-                status = Status.Over;
-                winner = currentPlayer;
-            }
-            if(isCheckMove(m)){
-            	state.isCheckState = true;
-        	}
-            currentPlayer = (currentPlayer == white)? black : white;
-            draw();
+            currentPlayer = (currentPlayer == white) ? black : white;
+//            draw();
         }
     }
 
-    Player getWinner(){
+    public Player getWinner(){
         return winner;
     }
 
@@ -121,55 +143,22 @@ public class Game implements Runnable, GameObservable{
             if(to % 8 == from % 8 && state.at(to) != null)
                 return false;
         }
-        //does not cause self check
-        if(causesSelfCheck(from, to, p, m))
+
+        //when player is in check, one can only move such that check is avoided
+        if(state.isCheckState){
+            state.add(m);
+            int kPos = state.getPieces(player.getColor()).stream().filter(piece -> piece.getPieceType() == PieceType.King).findFirst().get().getPos();
+            if(isPositionUnderAttack(kPos, player.getColor() == Color.BLACK ? Color.WHITE : Color.BLACK)){
+                state.undo();
+                return false;
+            }
+            state.undo();
+        }
+        //does not cause self check by moving from current position
+        if(causesSelfCheck(m))
             return false;
 
         return true;
-    }
-    
-    private boolean isCheckMove(Move m){
-        if(isAttacking(currentPlayer, state.at(m.getTo()), state.getPieces(currentPlayer.getColor() == Color.BLACK? Color.WHITE: Color.BLACK)
-        		.stream().filter(a-> a.getPieceType() == PieceType.King).findFirst().get())){
-        	return true;
-        }
-    	return false;
-    }
-    
-    private boolean kingUnderAttack(Color color){
-    	
-		for(PieceType pt : PieceType.values()){
-			if(isAttacking((currentPlayer == white)? black : white, state.getPieces(color)
-							.stream().filter(a -> a.getPieceType() == pt).findFirst().get(),
-							state.getPieces(color).stream().filter(a-> a.getPieceType() == PieceType.King)
-							.findFirst().get())){
-					return true;
-				}
-			}
-		return false;
-    }
-
-    private boolean isAttacking(Player p, Piece attacker, Piece victim){
-    	
-    	int temp = victim.getPos();
-    	victim.setPos(attacker.getPos());
-    	attacker.setPos(temp);
-    	
-		ArrayList<Integer> validMove = attacker.getValidMoves();
-		
-		temp = victim.getPos();
-    	victim.setPos(attacker.getPos());
-    	attacker.setPos(temp);
-    	
-		int i=0;
-		while(i < validMove.size()){
-			if(state.at(validMove.get(i)) != null && state.at(validMove.get(i)).getPieceType() ==attacker.getPieceType() &&
-				validateMove(new Move(validMove.get(i), victim.getPos()), p)){
-				return true;
-			}
-			i++;
-		}
-		return false;
     }
     
     private boolean isPathBlocked(final int from, final int to){
@@ -236,36 +225,63 @@ public class Game implements Runnable, GameObservable{
         return false;
     }
 
-    boolean causesSelfCheck(final int from, final int to, final Piece p, final Move m) {// Check if moving current player piece from 'from' causes self check.
+    boolean causesSelfCheck(final Move m) {// Check if moving current player piece causes self check.
+        Piece p = state.at(m.getFrom());
+        int to = m.getTo();
+        int from = m.getFrom();
         if (p.getPieceType() != PieceType.King) { // If piece is not king then check only the direction from where current player's  piece has moved.
+
         	int kPos = state.getPieces(currentPlayer.getColor()).stream()
         				.filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos();
-        	return checkEnemyCanAttack(kPos,from,m);
+        	return isIndirectUnderAttack(kPos, m);
         }
-        else{ // If piece is King then check all suspects individually
-            Stream<Piece> suspects  = state.getPieces(currentPlayer.getColor() == Color.BLACK? Color.WHITE : Color.BLACK).stream().filter(piece -> { //get all enemy pieces that can attack at location 'to'
-                if(piece.getValidMoves().stream().filter(i -> i == to).count() > 0)
-                    return true;
-                return false;
-            });
+        else{ // If piece is King
+            return isPositionUnderAttack(m.getTo(), currentPlayer.getColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
+        }
+    }
 
-            Stream canAttack = suspects.filter(piece -> {
-                if(piece.getPieceType() == PieceType.Pawn){ // if it is pawn then it is surely correct as pawn kills only adjacent pieces.
-                    return true;
-                }
-                if(checkEnemyCanAttack(to, piece.getPos(), m)){ // run same check for other piece types
-                    return true;
-                }
-                return false;
-            });
-            if(canAttack.count() > 0){
-                return true;
-            }
+    boolean causesCheck(final Move m) { // Check if moving current player piece causes check.
+        Player currentPlayer = state.at(m.getFrom()).getColor() == Color.BLACK ? black : white;
+        Player enemy = currentPlayer == black ? white : black;
+        int kPos = state.getPieces(enemy.getColor()).stream()
+                .filter(a -> a.getPieceType() == PieceType.King).findFirst().get().getPos();
+        state.add(m);
+        if(isPositionUnderAttack(kPos, currentPlayer.getColor())){
+            state.undo();
+            return true;
         }
+        state.undo();
         return false;
     }
 
-    boolean checkEnemyCanAttack(int kPos, int from, Move m){ // Check if moving current player piece from 'from' causes self check By searching enemy in the direction of the piece moved.. Not for pawn only for long range enemies
+    boolean isPositionUnderAttack(int kPos, Color enemy){ // checks is kPos position is under attack by Player p (Color)
+        return state.getPieces(enemy).stream().anyMatch(piece -> { //get all enemy pieces that can attack at location 'to'
+            if(piece.getValidMoves().stream().anyMatch(i -> i == kPos)) {
+                if (piece.getPieceType() == PieceType.Pawn) { // if it is pawn then check it's not in same column
+                    if (piece.getPos() % 8 != kPos % 8)
+                        return true;
+                }else if (piece.getPieceType() != PieceType.Knight){
+                    return !isPathBlocked(piece.getPos(), kPos);
+                }
+                else
+                    return true;
+            }
+            return false;
+        });
+    }
+
+    boolean isDirectUnderAttack(int kPos, Move m){
+        if(m.getTo() == kPos) // move directly attacking
+            return true;
+        return false;
+
+    }
+    boolean isIndirectUnderAttack(int kPos, Move m){ // Check if kPos is under indirect attack if Move m is done, Assumption : M is a valid move for piece. Not for pawn only for long range enemies
+        int from = m.getFrom();
+        if(kPos < 0 || kPos > 63 || state.at(m.getFrom()) == null)
+            throw new IllegalArgumentException("invalid move");
+        Player currentPlayer = (state.at(m.getFrom()).getColor() == Color.BLACK)? black : white;
+
         if (kPos / 8 == from / 8) { // Same Row
             state.add(m);
             if (from < kPos) {
@@ -292,7 +308,7 @@ public class Game implements Runnable, GameObservable{
                 int i = kPos - 8;
                 while (i >=0 && i <64 && state.at(i) == null && i % 8 == kPos % 8)
                     i -= 8;
-                if (( state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
+                if (( i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor() ) && (state.at(i).getPieceType() == PieceType.Rook || state.at(i).getPieceType() == PieceType.Queen) )  {
                     state.undo();
                     return true;
                 }
@@ -314,7 +330,7 @@ public class Game implements Runnable, GameObservable{
                     while (i >=0 && i <64 && state.at(i) == null && Math.abs(i / 8 - kPos / 8) == Math.abs(i % 8 - kPos % 8)) {
                         i = i - 8 - 1;
                     }
-                    if ((state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)){
+                    if ((i >=0 && i <64 && state.at(i) != null && state.at(i).getColor() != currentPlayer.getColor()) && (state.at(i).getPieceType() == PieceType.Bishop || state.at(i).getPieceType() == PieceType.Queen)){
                         state.undo();
                         return true;
                     }
@@ -352,5 +368,17 @@ public class Game implements Runnable, GameObservable{
             state.undo();
         }
         return false;
+    }
+
+    private boolean isMate(){ // check if current player is left with any valid moves.
+        return !(state.getPieces(currentPlayer.getColor()).stream().anyMatch(piece -> { //all pieces of current player
+            ArrayList<Integer> moves = piece.getValidMoves();
+            return (moves.stream().anyMatch(i -> { // validating all moves for a piece
+                if(validateMove(new Move(piece.getPos(), i), currentPlayer)) {
+                    return true;
+                }
+                return false;
+            }));
+        }));
     }
 }
